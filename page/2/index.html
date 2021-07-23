@@ -18,8 +18,8 @@
 <meta name=msapplication-TileColor content="#2e2e33">
 <meta name=generator content="Hugo 0.86.0">
 <link rel=alternate type=application/rss+xml href=https://amikai.github.io/index.xml>
-<link rel=alternate hreflang=en href=https://amikai.github.io/en/>
 <link rel=alternate hreflang=zh href=https://amikai.github.io/>
+<link rel=alternate hreflang=en href=https://amikai.github.io/en/>
 <script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-172478407-1','auto'),ga('send','pageview'))</script>
 <script async src=https://www.google-analytics.com/analytics.js></script>
 <meta property="og:title" content="no code no pain">
@@ -73,25 +73,6 @@
 <article class=post-entry>
 <header class=entry-header>
 <h2>
-Golang 78 語法篇 - method set
-</h2>
-</header>
-<section class=entry-content>
-<p>method set, interface, auto deference or reference 當這些語法綜合再一起使用時，很容易混淆，甚至寫出 bug code，這章我們就透過題目探討一下 method set 常常被大家誤會的地方。
-Golang 78 語法篇 - interface % Line 50 用到的概念就在這篇。
-題目 請問以下程式輸出結果為何
-type Employee struct {} func (e Employee) DoWork() { fmt.Println("do work") } func main() { (&Employee{}).DoWork() } 答案只有兩種方向: 1. 無法編譯 2. 印出 do work
-這個程式可以編譯，並且還印出 do work 但是為什麼呢？
-Method set 在 receiver argument 和 receiver parameter 不一樣的情況下，直覺反應就是 implicit dereference 和 implicit reference 在背後會幫忙，但是這個寫法 (struct literal) 是不會有此情況的。...</p>
-</section>
-<footer class=entry-footer>
-July 7, 2020&nbsp;·&nbsp;amikai
-</footer>
-<a class=entry-link aria-label="post link to Golang 78 語法篇 - method set" href=https://amikai.github.io/2020/07/07/golang78syntax2/></a>
-</article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>
 Golang 78 語法篇 - interface
 </h2>
 </header>
@@ -104,6 +85,20 @@ package main import "fmt" type S struct{ val int } func (s S) F() {} type IF int
 July 3, 2020&nbsp;·&nbsp;amikai
 </footer>
 <a class=entry-link aria-label="post link to Golang 78 語法篇 - interface" href=https://amikai.github.io/2020/07/03/golang78syntax/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>
+Hello 世界
+</h2>
+</header>
+<section class=entry-content>
+<p>Hello 世界</p>
+</section>
+<footer class=entry-footer>
+July 22, 2000&nbsp;·&nbsp;amikai
+</footer>
+<a class=entry-link aria-label="post link to Hello 世界" href=https://amikai.github.io/2000/07/22/hello-world/></a>
 </article>
 <footer class=page-footer>
 <nav class=pagination>
