@@ -42,7 +42,7 @@ Plug 'machakann/vim-highlightedyank'let g:highlightedyank_highlight_duration = 3
 在 neovim 0.5 裡達到這件事相當簡單，把以下加近
 autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup=&#34;IncSearch&#34;, timeout=300}如果是使用 vim 也可以用 vim-highlightedyank 套件達成
 Plug 'machakann/vim-highlightedyank'let g:highlightedyank_highlight_duration = 300if !exists('##TextYankPost') map y <Plug>(highlightedyank)endifReference  https://github.com/neovim/neovim/pull/12279 neovim :help lua-highlight  ">
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://amikai.github.io/posts/"},{"@type":"ListItem","position":2,"name":"vim 高亮 yank 區域","item":"https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://amikai.github.io/posts/"},{"@type":"ListItem","position":3,"name":"vim 高亮 yank 區域","item":"https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/"}]}</script>
 <script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"vim 高亮 yank 區域","name":"vim 高亮 yank 區域","description":"y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的，按了 yiw 複製 word 之後，你也無法確定是不是按對了，還要使用 :reg 檢視，頗麻煩的。\n解決方案：在使用 yank operator 之後，高亮複製區域短暫的時間，就能確認複製的區域有沒有誤。以下圖例為，在 23 行按下 yy, 在 24 行的 return 上按下 yiw\n在 neovim 0.5 裡達到這件事相當簡單，把以下加近\nautocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup=\u0026#34;IncSearch\u0026#34;, timeout=300}如果是使用 vim 也可以用 vim-highlightedyank 套件達成\nPlug \u0026#39;machakann/vim-highlightedyank\u0026#39;let g:highlightedyank_highlight_duration = 300if !exists(\u0026#39;##TextYankPost\u0026#39;) map y \u0026lt;Plug\u0026gt;(highlightedyank)endifReference  https://github.com/neovim/neovim/pull/12279 neovim :help lua-highlight  ","keywords":["vim","neovim"],"articleBody":"y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的，按了 yiw 複製 word 之後，你也無法確定是不是按對了，還要使用 :reg 檢視，頗麻煩的。\n解決方案：在使用 yank operator 之後，高亮複製區域短暫的時間，就能確認複製的區域有沒有誤。以下圖例為，在 23 行按下 yy, 在 24 行的 return 上按下 yiw\n在 neovim 0.5 裡達到這件事相當簡單，把以下加近\nautocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup=\"IncSearch\", timeout=300}如果是使用 vim 也可以用 vim-highlightedyank 套件達成\nPlug 'machakann/vim-highlightedyank'let g:highlightedyank_highlight_duration = 300if !exists('##TextYankPost') map y Plug(highlightedyank)endifReference  https://github.com/neovim/neovim/pull/12279 neovim :help lua-highlight  ","wordCount":"66","inLanguage":"zh","datePublished":"2020-09-29T21:09:01Z","dateModified":"2020-09-29T21:09:01Z","author":{"@type":"Person","name":"amikai"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/"},"publisher":{"@type":"Organization","name":"no code no pain","logo":{"@type":"ImageObject","url":"https://amikai.github.io/favicon.ico"}}}</script>
 </head>
 <body id=top>
@@ -54,7 +54,7 @@ Plug 'machakann/vim-highlightedyank'let g:highlightedyank_highlight_duration = 3
 <header class=header>
 <nav class=nav>
 <div class=logo>
-<a href=https://amikai.github.io/ accesskey=h title="no code no pain (Alt + H)">no code no pain</a>
+<a href=https://amikai.github.io accesskey=h title="no code no pain (Alt + H)">no code no pain</a>
 <span class=logo-switches>
 <button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
 </button>
@@ -125,7 +125,7 @@ September 29, 2020&nbsp;·&nbsp;amikai
 <a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
 </article>
 </main><footer class=footer>
-<span>&copy; 2021 <a href=https://amikai.github.io/>no code no pain</a></span>
+<span>&copy; 2021 <a href=https://amikai.github.io>no code no pain</a></span>
 <span>&#183;</span>
 <span>Powered by <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a></span>
 <span>&#183;</span>
