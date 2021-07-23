@@ -133,8 +133,7 @@ November 28, 2020&nbsp;·&nbsp;amikai
 </h2>
 </header>
 <section class=entry-content>
-<p>看下圖，如果想將 &lt;expr> 改成 &lt;leader> 你會怎麼做呢? {% asset_img question.png %}
-通常我看過的幾種方式如下：
+<p>看下圖，如果想將 &lt;expr> 改成 &lt;leader> 你會怎麼做呢? 通常我看過的幾種方式如下：
 使用 j 向下到 97 行，在使用 l 到 target 並且開始編輯，這也是最糟的 target 的行數看起來離 window 中央行很近， 使用 M 跳到 window 中央行，再使用 h j k l 到 target 使用 :set number 列出行號， 按下 97G 到達 97 行， fe ; ; ; 註: f{char} 找到此行的下一個字母、 ; 為重複上一個 f 命令 使用 / 搜尋 expr，在使用 n n n n 到 target 使用 set mouse=n，用滑鼠點 target Easymotion easymotion 是解決此情境最好的方案之一，它提供了另一種搜尋方式，在搜尋目標之後，會將可能位置的抽換成其他字母，並高亮這些字母，再按下這些字母就可以跳到此位置 (之後簡稱為 label and jump 功能)。 easymotion 的設計就是加強內建的移動指令，只是跳轉到目標的方式變了，所以不需要擔心不會用。...</p>
 </section>
 <footer class=entry-footer>
