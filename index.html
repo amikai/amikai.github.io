@@ -83,6 +83,21 @@
 <article class=post-entry>
 <header class=entry-header>
 <h2>
+Golang 開發環境 - 使用 neovim 0.5
+</h2>
+</header>
+<section class=entry-content>
+<p>Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所有工作不會再被單一線程給擋住 (在過去 linter 檢查時，是無法寫程式碼的)，大大提升了可用性和使用者體驗，朝現代編輯器躍進了一大步。neovim 並沒有因此停下腳步，在之後的版本陸續推出了
+remote plugin：使得寫 plugin 不在受限於 vimscript，可以使用其他語言並且基於 client server 架構和 neovim 溝通，這樣就能好好的利用各個語言生態系的工具，製作出更多有彈性的套件。ex: deoplete.nvim 和 defx.nvim 皆是 python 所撰寫的 remote plugin treesitter 的支援：過去 vim 的 syntax highlight 都是靠 regex，現在可以使用 treesitter ，效能更好，抓詞的時候更準確 支援 lua 寫套件：可以完全使用 lua 撰寫套件 ，脫離怪異的 vimscript，和 remote plugin 不同，remote plugin 是基於 client server 架構通訊 built-in LSP client (0.5)：內建 LSP client，使用者可以透過 neovim LSP api 和 LSP server 互動 2021 的 0....</p>
+</section>
+<footer class=entry-footer>
+August 16, 2021&nbsp;·&nbsp;amikai
+</footer>
+<a class=entry-link aria-label="post link to Golang 開發環境 - 使用 neovim 0.5" href=https://amikai.github.io/2021/08/16/go_neovim_env_0.5/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>
 好用的 vim virtualedit 選項
 </h2>
 </header>
@@ -239,25 +254,6 @@ Golang 開發環境 - 使用 neovim
 September 3, 2020&nbsp;·&nbsp;amikai
 </footer>
 <a class=entry-link aria-label="post link to Golang 開發環境 - 使用 neovim" href=https://amikai.github.io/2020/09/03/go_neovim_env/></a>
-</article>
-<article class=post-entry>
-<header class=entry-header>
-<h2>
-Golang 78 語法篇 - method set
-</h2>
-</header>
-<section class=entry-content>
-<p>method set, interface, auto deference or reference 當這些語法綜合再一起使用時，很容易混淆，甚至寫出 bug code，這章我們就透過題目探討一下 method set 常常被大家誤會的地方。
-Golang 78 語法篇 - interface % Line 50 用到的概念就在這篇。
-題目 請問以下程式輸出結果為何
-type Employee struct {} func (e Employee) DoWork() { fmt.Println("do work") } func main() { (&Employee{}).DoWork() } 答案只有兩種方向: 1. 無法編譯 2. 印出 do work
-這個程式可以編譯，並且還印出 do work 但是為什麼呢？
-Method set 在 receiver argument 和 receiver parameter 不一樣的情況下，直覺反應就是 implicit dereference 和 implicit reference 在背後會幫忙，但是這個寫法 (struct literal) 是不會有此情況的。...</p>
-</section>
-<footer class=entry-footer>
-July 7, 2020&nbsp;·&nbsp;amikai
-</footer>
-<a class=entry-link aria-label="post link to Golang 78 語法篇 - method set" href=https://amikai.github.io/2020/07/07/golang78syntax2/></a>
 </article>
 <footer class=page-footer>
 <nav class=pagination>

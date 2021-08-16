@@ -76,6 +76,25 @@
 <article class=post-entry>
 <header class=entry-header>
 <h2>
+Golang 78 語法篇 - method set
+</h2>
+</header>
+<section class=entry-content>
+<p>method set, interface, auto deference or reference 當這些語法綜合再一起使用時，很容易混淆，甚至寫出 bug code，這章我們就透過題目探討一下 method set 常常被大家誤會的地方。
+Golang 78 語法篇 - interface % Line 50 用到的概念就在這篇。
+題目 請問以下程式輸出結果為何
+type Employee struct {} func (e Employee) DoWork() { fmt.Println("do work") } func main() { (&Employee{}).DoWork() } 答案只有兩種方向: 1. 無法編譯 2. 印出 do work
+這個程式可以編譯，並且還印出 do work 但是為什麼呢？
+Method set 在 receiver argument 和 receiver parameter 不一樣的情況下，直覺反應就是 implicit dereference 和 implicit reference 在背後會幫忙，但是這個寫法 (struct literal) 是不會有此情況的。...</p>
+</section>
+<footer class=entry-footer>
+July 7, 2020&nbsp;·&nbsp;amikai
+</footer>
+<a class=entry-link aria-label="post link to Golang 78 語法篇 - method set" href=https://amikai.github.io/2020/07/07/golang78syntax2/></a>
+</article>
+<article class=post-entry>
+<header class=entry-header>
+<h2>
 Golang 78 語法篇 - interface
 </h2>
 </header>
