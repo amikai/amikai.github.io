@@ -1,107 +1,155 @@
-<!doctype html><html lang=zh dir=auto>
-<head><meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
-<meta name=robots content="index, follow">
-<title>c | no code no pain</title>
-<meta name=keywords content>
-<meta name=description content="amikai's blog, my learning notes about backend, golang, (neo)vim, k8s, etc.">
-<meta name=author content="amikai">
+<!doctype html><html lang=zh>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>c · amikai's blog</title>
+<meta name=renderer content="webkit">
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta http-equiv=cache-control content="no-transform">
+<meta http-equiv=cache-control content="no-siteapp">
+<meta name=theme-color content="#f8f5ec">
+<meta name=msapplication-navbutton-color content="#f8f5ec">
+<meta name=apple-mobile-web-app-capable content="yes">
+<meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec">
+<meta name=author content><meta name=description content="amikai's blog, my learning notes about backend, golang, (neo)vim, k8s, etc."><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
+<meta name=generator content="Hugo 0.86.0 with theme even">
 <link rel=canonical href=https://amikai.github.io/tags/c/>
-<link href=/assets/css/stylesheet.min.1e4b51002afd206b67ec98785f7d3a6d4fd0feb374e07bb018954cad57795586.css integrity="sha256-HktRACr9IGtn7Jh4X306bU/Q/rN04HuwGJVMrVd5VYY=" rel="preload stylesheet" as=style>
-<link rel=icon href=https://amikai.github.io/favicon.ico>
-<link rel=icon type=image/png sizes=16x16 href=https://amikai.github.io/favicon-16x16.png>
-<link rel=icon type=image/png sizes=32x32 href=https://amikai.github.io/favicon-32x32.png>
-<link rel=apple-touch-icon href=https://amikai.github.io/apple-touch-icon.png>
-<link rel=mask-icon href=https://amikai.github.io/safari-pinned-tab.svg>
-<meta name=theme-color content="#2e2e33">
-<meta name=msapplication-TileColor content="#2e2e33">
-<meta name=generator content="Hugo 0.86.0">
-<link rel=alternate type=application/rss+xml href=https://amikai.github.io/tags/c/index.xml>
-<link rel=alternate hreflang=zh href=https://amikai.github.io/tags/c/>
-<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-172478407-1','auto'),ga('send','pageview'))</script>
-<script async src=https://www.google-analytics.com/analytics.js></script>
+<link href=https://amikai.github.io/tags/c/index.xml rel=alternate type=application/rss+xml title="amikai's blog">
+<link href=https://amikai.github.io/tags/c/index.xml rel=feed type=application/rss+xml title="amikai's blog">
+<link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png>
+<link rel=manifest href=/manifest.json>
+<link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5>
+<link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet>
+<link href=/lib/fancybox/jquery.fancybox-3.1.20.min.css rel=stylesheet>
 <meta property="og:title" content="c">
 <meta property="og:description" content="amikai's blog, my learning notes about backend, golang, (neo)vim, k8s, etc.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://amikai.github.io/tags/c/">
-<meta name=twitter:card content="summary">
+<meta itemprop=name content="c">
+<meta itemprop=description content="amikai's blog, my learning notes about backend, golang, (neo)vim, k8s, etc."><meta name=twitter:card content="summary">
 <meta name=twitter:title content="c">
-<meta name=twitter:description content="amikai's blog, my learning notes about backend, golang, (neo)vim, k8s, etc.">
+<meta name=twitter:description content="amikai's blog, my learning notes about backend, golang, (neo)vim, k8s, etc."><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]-->
 </head>
-<body class=list id=top>
-<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
-<noscript>
-<style type=text/css>#theme-toggle,.top-link{display:none}</style>
-<style>@media(prefers-color-scheme:dark){:root{--theme:#1d1e20;--entry:#2e2e33;--primary:rgba(255, 255, 255, 0.84);--secondary:rgba(255, 255, 255, 0.56);--tertiary:rgba(255, 255, 255, 0.16);--content:rgba(255, 255, 255, 0.74);--hljs-bg:#2e2e33;--code-bg:#37383e;--border:#333}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
-</noscript>
-<header class=header>
-<nav class=nav>
-<div class=logo>
-<a href=https://amikai.github.io accesskey=h title="no code no pain (Alt + H)">no code no pain</a>
-<span class=logo-switches>
-<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-</button>
-<ul class=lang-switch><li>|</li>
-<li>
-<a href=https://amikai.github.io/en/ title=English aria-label=English>English</a>
+<body>
+<div id=mobile-navbar class=mobile-navbar>
+<div class=mobile-header-logo>
+<a href=/ class=logo>amikai's blog</a>
+</div>
+<div class=mobile-navbar-icon>
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav id=mobile-menu class="mobile-menu slideout-menu">
+<ul class=mobile-menu-list>
+<a href=/>
+<li class=mobile-menu-item>Home</li>
+</a><a href=/post/>
+<li class=mobile-menu-item>Archives</li>
+</a><a href=/tags/>
+<li class=mobile-menu-item>Tags</li>
+</a><a href=/categories/>
+<li class=mobile-menu-item>Categories</li>
+</a>
+</ul>
+<div class=language-selector>
+<ul class=languages-list>
+<li class="language-item active">
+<a href=https://amikai.github.io/tags/c/>zh</a>
+</li>
+<li class=language-item>
+<a href=https://amikai.github.io/en/>en</a>
 </li>
 </ul>
-</span>
 </div>
-<ul id=menu onscroll=menu_on_scroll()>
-<li>
-<a href=https://amikai.github.io/archives title=Archive>
-<span>Archive</span>
-</a>
+</nav>
+<div class=container id=mobile-panel>
+<header id=header class=header>
+<div class=logo-wrapper>
+<a href=/ class=logo>amikai's blog</a>
+</div>
+<div class=language-selector>
+<ul class=languages-list>
+<li class="language-item active">
+<a href=https://amikai.github.io/tags/c/>zh</a>
 </li>
-<li>
-<a href=https://amikai.github.io/categories/ title=Categories>
-<span>Categories</span>
-</a>
+<li class=language-item>
+<a href=https://amikai.github.io/en/>en</a>
 </li>
-<li>
-<a href=https://amikai.github.io/tags/ title=Tags>
-<span>Tags</span>
-</a>
-</li></ul>
+</ul>
+</div>
+<nav class=site-navbar>
+<ul id=menu class=menu>
+<li class=menu-item>
+<a class=menu-item-link href=/>Home</a>
+</li><li class=menu-item>
+<a class=menu-item-link href=/post/>Archives</a>
+</li><li class=menu-item>
+<a class=menu-item-link href=/tags/>Tags</a>
+</li><li class=menu-item>
+<a class=menu-item-link href=/categories/>Categories</a>
+</li>
+</ul>
 </nav>
 </header>
-<main class=main>
-<header class=page-header>
-<h1>c</h1>
-</header>
-<article class="post-entry tag-entry">
-<header class=entry-header>
-<h2>
+<main id=main class=main>
+<div class=content-wrapper>
+<div id=content class=content>
+<section id=archive class=archive>
+<div class="archive-title tag">
+<h2 class=archive-name>c</h2>
+</div>
+<div class=archive-post>
+<span class=archive-post-time>
+2020-11-28
+</span>
+<span class=archive-post-title>
+<a href=/2020/11/28/vim-c-env-move/ class=archive-post-link>
 在 (neo)vim 裡 C 語言程式碼導覽技巧
-</h2>
-</header>
-<section class=entry-content>
-<p>現代的專案開發，很少在從無到有打造，大部分都是基於現有的程式之上繼續開發或維護，進入專案之後，通常第一件事就是大量閱讀程式碼理清專案的整個脈絡，才開始著手寫 code，所以好的程式碼導覽技巧將會帶你上天堂。
-我將大部分的程式碼導覽情境大致拆成了三種情況：
-基本的跳轉： #if #endif 中間的程式碼太長，想要跳轉到成對的 #if #endif cursor 在 {…} block 裡， 這個 block 又臭又長，想快速跳轉 block 的開頭和結尾 註解長篇大論，想快速跳到註解的開頭或結尾 尋找專案下檔案 (可透過設定 path option 解決) 跳轉到標頭檔 跳轉到指定檔案 使用 source code tagging system 快速挑轉到 function 定義及特定 symbol 等等： 專案相當大的時候，source code tagging system 相當好用，可以快速找到定位，也不會花掉太多的資源，比起 LSP 的跳轉定義，是較輕量的選擇。 本篇依據上述三種情境，一一講述。
-常用跳轉操作 %
-跳到成對的括號 如果註解是 /*...*/，跳到成對的註解符號 在成對的 #if, #ifdef, #else, #elif, #endif 之中跳轉，這相當重要，如果 code 很長, if else macro 又是巢狀的，這招可以讓你少迷路好幾次 [{ ]}...</p>
-</section>
-<footer class=entry-footer>
-November 28, 2020&nbsp;·&nbsp;amikai
-</footer>
-<a class=entry-link aria-label="post link to 在 (neo)vim 裡 C 語言程式碼導覽技巧" href=https://amikai.github.io/2020/11/28/vim-c-env-move/></a>
-</article>
-</main><footer class=footer>
-<span>&copy; 2021 <a href=https://amikai.github.io>no code no pain</a></span>
-<span>&#183;</span>
-<span>Powered by <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a></span>
-<span>&#183;</span>
-<span>Theme <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a></span>
-</footer>
-<a href=#top aria-label="go to top" title="Go to Top (Alt + G)">
-<button class=top-link id=top-link type=button accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
-</button>
 </a>
-<script>window.onload=function(){localStorage.getItem("menu-scroll-position")&&(document.getElementById('menu').scrollLeft=localStorage.getItem("menu-scroll-position"))};function menu_on_scroll(){localStorage.setItem("menu-scroll-position",document.getElementById('menu').scrollLeft)}document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
-<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
-<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+</span>
+</div>
+</section>
+<nav class=pagination>
+</nav>
+</div>
+</div>
+</main>
+<footer id=footer class=footer>
+<div class=social-links>
+<a href=https://www.linkedin.com/in/yun-kai-chuang-122064a5/ class="iconfont icon-linkedin" title=linkedin></a>
+<a href=https://github.com/amikai class="iconfont icon-github" title=github></a>
+<a href=https://amikai.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a>
+</div>
+<div class=copyright>
+<span class=power-by>
+%!(EXTRA string=<a class=hexo-link href=https://gohugo.io>Hugo</a>)
+</span>
+<span class=division>|</span>
+<span class=theme-info>
+-
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a>
+</span>
+<span class=copyright-year>
+&copy;
+-
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span></span>
+</span>
+</div>
+</footer>
+<div class=back-to-top id=back-to-top>
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script type=text/javascript src=/lib/jquery/jquery-3.2.1.min.js></script>
+<script type=text/javascript src=/lib/slideout/slideout-1.0.1.min.js></script>
+<script type=text/javascript src=/lib/fancybox/jquery.fancybox-3.1.20.min.js></script>
+<script type=text/javascript src=/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js></script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-172478407-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
 </body>
 </html>

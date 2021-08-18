@@ -1,103 +1,120 @@
-<!doctype html><html lang=zh dir=auto>
-<head><meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
-<meta name=robots content="index, follow">
-<title>你應該擴充的 text object | no code no pain</title>
-<meta name=keywords content="vim,neovim">
-<meta name=description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。
-operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。
-如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 耍潮必備。
-本篇將會提到:
- operator, text object, motion 的配合用法 內建 text object 的不足之處 擴充 text object 的 plugin 淺談 nvim-treesitter  Operator & text object Vim 定義了多個 operator 最常用的就是:
- d delete (刪除) c change (更改) y yank (複製)  operator 沒有配合 text object 或是 motion 是沒有意義的，想像一下使用了 d 刪除，但是沒告訴它要刪除什麼，就像有了鐵鎚不知道要打什麼。所以需要給 operator 一個目標，讓它要對誰做什麼。這個誰就有兩種，motion 和 text object。
-motion：其實就是跳轉指令，像是常用的 G,gg, w, f{char} &mldr; 等都可以配合 operator。基本使用方法為 {operator}{motion}，語意就是做這個 operator 動作到 motion 所到的地方">
-<meta name=author content="amikai">
+<!doctype html><html lang=zh>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>你應該擴充的 text object - amikai's blog</title>
+<meta name=renderer content="webkit">
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta http-equiv=cache-control content="no-transform">
+<meta http-equiv=cache-control content="no-siteapp">
+<meta name=theme-color content="#f8f5ec">
+<meta name=msapplication-navbutton-color content="#f8f5ec">
+<meta name=apple-mobile-web-app-capable content="yes">
+<meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec">
+<meta name=author content><meta name=description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。 operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合"><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
+<meta name=generator content="Hugo 0.86.0 with theme even">
 <link rel=canonical href=https://amikai.github.io/2020/09/22/vim-text-object/>
-<link href=/assets/css/stylesheet.min.1e4b51002afd206b67ec98785f7d3a6d4fd0feb374e07bb018954cad57795586.css integrity="sha256-HktRACr9IGtn7Jh4X306bU/Q/rN04HuwGJVMrVd5VYY=" rel="preload stylesheet" as=style>
-<link rel=icon href=https://amikai.github.io/favicon.ico>
-<link rel=icon type=image/png sizes=16x16 href=https://amikai.github.io/favicon-16x16.png>
-<link rel=icon type=image/png sizes=32x32 href=https://amikai.github.io/favicon-32x32.png>
-<link rel=apple-touch-icon href=https://amikai.github.io/apple-touch-icon.png>
-<link rel=mask-icon href=https://amikai.github.io/safari-pinned-tab.svg>
-<meta name=theme-color content="#2e2e33">
-<meta name=msapplication-TileColor content="#2e2e33">
-<meta name=generator content="Hugo 0.86.0">
-<link rel=alternate hreflang=zh href=https://amikai.github.io/2020/09/22/vim-text-object/>
-<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-172478407-1','auto'),ga('send','pageview'))</script>
-<script async src=https://www.google-analytics.com/analytics.js></script>
+<link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png>
+<link rel=manifest href=/manifest.json>
+<link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5>
+<link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet>
+<link href=/lib/fancybox/jquery.fancybox-3.1.20.min.css rel=stylesheet>
 <meta property="og:title" content="你應該擴充的 text object">
-<meta property="og:description" content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。
-operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。
-如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 耍潮必備。
-本篇將會提到:
- operator, text object, motion 的配合用法 內建 text object 的不足之處 擴充 text object 的 plugin 淺談 nvim-treesitter  Operator & text object Vim 定義了多個 operator 最常用的就是:
- d delete (刪除) c change (更改) y yank (複製)  operator 沒有配合 text object 或是 motion 是沒有意義的，想像一下使用了 d 刪除，但是沒告訴它要刪除什麼，就像有了鐵鎚不知道要打什麼。所以需要給 operator 一個目標，讓它要對誰做什麼。這個誰就有兩種，motion 和 text object。
-motion：其實就是跳轉指令，像是常用的 G,gg, w, f{char} &mldr; 等都可以配合 operator。基本使用方法為 {operator}{motion}，語意就是做這個 operator 動作到 motion 所到的地方">
+<meta property="og:description" content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。 operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://amikai.github.io/2020/09/22/vim-text-object/"><meta property="article:section" content="posts">
+<meta property="og:url" content="https://amikai.github.io/2020/09/22/vim-text-object/"><meta property="article:section" content="post">
 <meta property="article:published_time" content="2020-09-22T19:03:52+00:00">
 <meta property="article:modified_time" content="2020-09-22T19:03:52+00:00">
-<meta name=twitter:card content="summary">
+<meta itemprop=name content="你應該擴充的 text object">
+<meta itemprop=description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。 operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合"><meta itemprop=datePublished content="2020-09-22T19:03:52+00:00">
+<meta itemprop=dateModified content="2020-09-22T19:03:52+00:00">
+<meta itemprop=wordCount content="2768">
+<meta itemprop=keywords content="vim,neovim,"><meta name=twitter:card content="summary">
 <meta name=twitter:title content="你應該擴充的 text object">
-<meta name=twitter:description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。
-operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。
-如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 耍潮必備。
-本篇將會提到:
- operator, text object, motion 的配合用法 內建 text object 的不足之處 擴充 text object 的 plugin 淺談 nvim-treesitter  Operator & text object Vim 定義了多個 operator 最常用的就是:
- d delete (刪除) c change (更改) y yank (複製)  operator 沒有配合 text object 或是 motion 是沒有意義的，想像一下使用了 d 刪除，但是沒告訴它要刪除什麼，就像有了鐵鎚不知道要打什麼。所以需要給 operator 一個目標，讓它要對誰做什麼。這個誰就有兩種，motion 和 text object。
-motion：其實就是跳轉指令，像是常用的 G,gg, w, f{char} &mldr; 等都可以配合 operator。基本使用方法為 {operator}{motion}，語意就是做這個 operator 動作到 motion 所到的地方">
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://amikai.github.io/posts/"},{"@type":"ListItem","position":3,"name":"你應該擴充的 text object","item":"https://amikai.github.io/2020/09/22/vim-text-object/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"你應該擴充的 text object","name":"你應該擴充的 text object","description":"vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。\noperator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。\n如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 耍潮必備。\n本篇將會提到:\n operator, text object, motion 的配合用法 內建 text object 的不足之處 擴充 text object 的 plugin 淺談 nvim-treesitter  Operator \u0026amp; text object Vim 定義了多個 operator 最常用的就是:\n d delete (刪除) c change (更改) y yank (複製)  operator 沒有配合 text object 或是 motion 是沒有意義的，想像一下使用了 d 刪除，但是沒告訴它要刪除什麼，就像有了鐵鎚不知道要打什麼。所以需要給 operator 一個目標，讓它要對誰做什麼。這個誰就有兩種，motion 和 text object。\nmotion：其實就是跳轉指令，像是常用的 G,gg, w, f{char} \u0026hellip; 等都可以配合 operator。基本使用方法為 {operator}{motion}，語意就是做這個 operator 動作到 motion 所到的地方","keywords":["vim","neovim"],"articleBody":"vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。\noperator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。\n如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 耍潮必備。\n本篇將會提到:\n operator, text object, motion 的配合用法 內建 text object 的不足之處 擴充 text object 的 plugin 淺談 nvim-treesitter  Operator \u0026 text object Vim 定義了多個 operator 最常用的就是:\n d delete (刪除) c change (更改) y yank (複製)  operator 沒有配合 text object 或是 motion 是沒有意義的，想像一下使用了 d 刪除，但是沒告訴它要刪除什麼，就像有了鐵鎚不知道要打什麼。所以需要給 operator 一個目標，讓它要對誰做什麼。這個誰就有兩種，motion 和 text object。\nmotion：其實就是跳轉指令，像是常用的 G,gg, w, f{char} … 等都可以配合 operator。基本使用方法為 {operator}{motion}，語意就是做這個 operator 動作到 motion 所到的地方\n以 d operator 做舉例的話 (其他 operator 以此類推):\n dG: 刪除 從游標到檔案的尾部 dgg: 刪除 從游標到檔案的頭部 dw: 刪除 從游標到下一個字 dfz: 刪除 從游標底下到達此行 z 這個字母 (如果此行無 z 則不動作)  text object： 通常是已經定義的一個範圍，像是 word, quote, () block … 等。內建的 text object 都會有 i 或 a 為前輟，i 表示 inside (不包含的概念)、 a 表示 around (包含的概念)。\n常用的 text object:\n iw ：游標下的字不包含後面的空白 (英文斷字使用空白) aw ：游標下的字包含後面的空白 (英文斷字使用空白) i\" ：游標下在雙引號裡的所有字不包含雙引號 a\" ：游標下在雙引號裡的所有字包含雙引號 i(, i) ：游標下在小括號裡的所有字不包含小括號 a(, a) ：游標下在小括號裡的所有字包含小括號  基本使用方式為 {operator}{text object}，語意就是對此 text object 做這個operator 動作 使用 d operator 做舉例:\n diw ：刪除 游標下的字不包含後面的空白 (英文斷字使用空白) daw ：刪除 游標下的字包含後面的空白 (英文斷字使用空白) di\" ：刪除 游標下在雙引號裡的所有字不包含雙引號 da\" ：刪除 游標下在雙引號裡的所有字不包含雙引號 di(, di) ：刪除 游標下在小括號裡的所有字不包含雙引號 da(, da) ：刪除 游標下在小括號裡的所有字包含雙引號   建議自己把 :help motion.txt 翻一翻，找出自己常用的 text object 看一看，寫成一個 cheat sheet\n 雖然 vim 定義了大量的 text object，但可能大部分都不是你想要的，那就透過 plugin 來滿足需求吧。\n簡單好用的 vim-textobj-user kana 所發展的 kana/vim-textobj-user 是一個 lib，讓使用者藉由這個 lib 輕鬆的製作屬於自己的 text object，所以就有一些 plugin 基於此 lib 做出更多的 text object，這些 plugin 的名字通常都叫 vim-textobj-xxx 。\n使用 plugin 的方法為：\n 安裝 kana/vim-textobj-user 在 wiki 裡查看自己所需的 text object plugin，並且安裝  舉例來說：我最常用的兩個 text object 是 comment 和 funtion parameter，所以我選定 glts/vim-textobj-comment 和 sgur/vim-textobj-parameter\nPlug 'kana/vim-textobj-user'Plug 'glts/vim-textobj-comment'Plug 'sgur/vim-textobj-parameter'vim-textobj-comment 提供了：\n ic：comment 內容 ac：comment 內容 + comment 符號  vim-textobj-parameter 提供了：\n i,：參數 a,：參數符號 + 分隔符號 (也就是逗號)  更細膩的 text object - targets.vim wellle/targets.vim 把 text object 的種類拆成四類型：\n Pair text objects - ( ) { } [ ]   Quote text objects - ' \" ` Separator text objects - , . ; : + - = ~ _ * # / | \\ \u0026 $ Argument text objects Tag text objects  Pair 和 Quote text objects 是 vim 原本就有的概念，Separator text objects 如其名，兩個 separator 之間的字就是 Separator text objects 了。 舉個使用情境：url GET 參數都用 \u0026 所隔開，如果想刪除 \u0026 之間的字那就用得上了\n內建的 text object 使用了 i 和 a 做前輟，而 targets.vim 更為細膩，提供了額外的 I 和 A 擴充原本的 i 和 a，再加上一層概念 n 和 l，n 代表下一個，l 則代表上一個。\n註：內建的 text object 都是以游標位置為準，沒上一個和下一個的概念\n以 ) 做個舉例：\n i)：包含括號裡的所有字 I)：包含括號裡的所有字，但括號裡兩邊的空白不包含 a)：包含括號和括號裡的所有字 A)：包含括號和括號裡的所有字還有兩邊括號外的空白  加上 n 和 l 的話就是下一個跟上一個\n. 表示游標所在位置\n .......... a ( b ( cccccccc ) d ) ( e ( ffffff ) g ) ( h ( iiiiiiii ) j ) k │││ ││└ 2Il) ┘││││││││││ ││└ I) ┘││││││││││ ││└ 2In) ┘│││││││ │││ │└─ 2il) ─┘│││││││││ │└─ i) ─┘│││││││││ │└─ 2in) ─┘││││││ │││ ├── 2al) ──┘││││││││ ├── a) ──┘││││││││ ├── 2an) ──┘│││││ │││ └── 2Al) ───┘│││││││ └── A) ───┘│││││││ └── 2An) ───┘││││ ││└───── Il) ────┘│││││└─── 2I) ────┘│││││└───── In) ────┘│││ │└────── il) ─────┘│││└──── 2i) ─────┘│││└────── in) ─────┘││ ├─────── al) ──────┘│├───── 2a) ──────┘│├─────── an) ──────┘│ └─────── Al) ───────┘└───── 2A) ───────┘└─────── An) ───────┘ target.vim 提供的 text object 實在太多太複雜，所以很貼心的做了 cheat sheet\nsyntax 相關 text object 以上所提到的 text object 都是和程式語言較無相關的 text object。程式語言相關的 text object，比如說 function, class, structure⋯⋯，這些相關的 text object plugin 相對來說比較少見。\nvim 並沒有提供一個介面直接拿取 syntax tree 的某一個 node，所以現在的所有 text object 的 plugin 都是靠 regex 或是其他字串比對的方式。假如想要一個 function 的 text object，就必須在每種語言都用 regex 或字串比對做一遍，相當的麻煩，kana/vim-textobj-function 就是一個例子，目前只提供三種語言，並且每種語言實做一次。\n一個 text object 為主的 plugin 想要集成所有的 syntax 相關 text object 變得不太可能，所以這些 syntax 相關 text object plugin 通常都已一種語言為主，或是附屬在某些語言 plugin 底下：\n vim-go 提供了 comment (ac, ic) 和 function (af, if) text object sgur/vim-textobj-parameter 為 python syntax 相關的 text object mjbrownie/django-template-textobjects 為 django-template 相關的 text object  救世主 treesitter 一個 text object 為主的 plugin 想要集成所有的 syntax 相關 text object 真的不可能達到嗎？ 等到 Treesitter 被 neovim 整合完成後一切將變得簡單許多。\nTreesitter 簡單來講就是個 parser，可以使用它建立 syntax tree，官方介紹如下： Tree-sitter is a parser generator tool and an incremental parsing library. It can build a concrete syntax tree for a source file and efficiently update the syntax tree as the source file is edited\nneovim 0.5 版的目標就是要將 treesitter 整合，完成之後將可在 neovim 裡使用 treesitter 相關的 api，拿到了 syntax tree， 要抓到 text object 變得容易許多。別說做 text object plugin 了，連 syntax highlight, code folding 等相關 plugin 都可以不需倚賴 regex ，而目前已經有基於 treesitter 的 plugin 了： nvim-treesitter/nvim-treesitter\n詳見 :help treesitter-parsers\n結語 wellle/targets.vim 和 kana/vim-textobj-user 在開發上使用截然不同的方式，前者定義好大量細膩的 text object，後者則是一個 lib，由使用者以此 lib 為基礎在開發 plugin。\n對我來說，內建的 text object 已經足夠強大幾乎滿足需求，只需要在做一點補強，像是常用的 comment 和 funtion parameter 就沒有被 vim 定義。而 target.vim 大量細膩的 text object 使用情境都比較特殊，所以我就選擇了 vim-textobj-user 陣營——只選擇自己所需要的安裝，不會有多餘的功能。\nnvim-treesitter/nvim-treesitter 倚賴 syntax tree 解決了使用 regex 開發 text object plugin 的麻煩，而且更精準，可以預見 neovim 0.5 完成後的未來，syntax 相關的 text object plugin 將會被此 plugin 統一。\nReference  https://codeinthehole.com/tips/vim-text-objects/ https://www.tandrewnichols.me/motions-operators-text-objects-introduction/ :help 'motion.txt'  ","wordCount":"702","inLanguage":"zh","datePublished":"2020-09-22T19:03:52Z","dateModified":"2020-09-22T19:03:52Z","author":{"@type":"Person","name":"amikai"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://amikai.github.io/2020/09/22/vim-text-object/"},"publisher":{"@type":"Organization","name":"no code no pain","logo":{"@type":"ImageObject","url":"https://amikai.github.io/favicon.ico"}}}</script>
+<meta name=twitter:description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。 operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]-->
 </head>
-<body id=top>
-<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
-<noscript>
-<style type=text/css>#theme-toggle,.top-link{display:none}</style>
-<style>@media(prefers-color-scheme:dark){:root{--theme:#1d1e20;--entry:#2e2e33;--primary:rgba(255, 255, 255, 0.84);--secondary:rgba(255, 255, 255, 0.56);--tertiary:rgba(255, 255, 255, 0.16);--content:rgba(255, 255, 255, 0.74);--hljs-bg:#2e2e33;--code-bg:#37383e;--border:#333}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
-</noscript>
-<header class=header>
-<nav class=nav>
-<div class=logo>
-<a href=https://amikai.github.io accesskey=h title="no code no pain (Alt + H)">no code no pain</a>
-<span class=logo-switches>
-<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-</button>
-<ul class=lang-switch><li>|</li>
-<li>
-<a href=https://amikai.github.io/en/ title=English aria-label=English>English</a>
+<body>
+<div id=mobile-navbar class=mobile-navbar>
+<div class=mobile-header-logo>
+<a href=/ class=logo>amikai's blog</a>
+</div>
+<div class=mobile-navbar-icon>
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav id=mobile-menu class="mobile-menu slideout-menu">
+<ul class=mobile-menu-list>
+<a href=/>
+<li class=mobile-menu-item>Home</li>
+</a><a href=/post/>
+<li class=mobile-menu-item>Archives</li>
+</a><a href=/tags/>
+<li class=mobile-menu-item>Tags</li>
+</a><a href=/categories/>
+<li class=mobile-menu-item>Categories</li>
+</a>
+</ul>
+<div class=language-selector>
+<ul class=languages-list>
+<li class="language-item active">
+<a href=https://amikai.github.io/2020/09/22/vim-text-object/>zh</a>
+</li>
+<li class=language-item>
+<a href=https://amikai.github.io/en/>en</a>
 </li>
 </ul>
-</span>
 </div>
-<ul id=menu onscroll=menu_on_scroll()>
-<li>
-<a href=https://amikai.github.io/archives title=Archive>
-<span>Archive</span>
-</a>
+</nav>
+<div class=container id=mobile-panel>
+<header id=header class=header>
+<div class=logo-wrapper>
+<a href=/ class=logo>amikai's blog</a>
+</div>
+<div class=language-selector>
+<ul class=languages-list>
+<li class="language-item active">
+<a href=https://amikai.github.io/2020/09/22/vim-text-object/>zh</a>
 </li>
-<li>
-<a href=https://amikai.github.io/categories/ title=Categories>
-<span>Categories</span>
-</a>
+<li class=language-item>
+<a href=https://amikai.github.io/en/>en</a>
 </li>
-<li>
-<a href=https://amikai.github.io/tags/ title=Tags>
-<span>Tags</span>
-</a>
-</li></ul>
+</ul>
+</div>
+<nav class=site-navbar>
+<ul id=menu class=menu>
+<li class=menu-item>
+<a class=menu-item-link href=/>Home</a>
+</li><li class=menu-item>
+<a class=menu-item-link href=/post/>Archives</a>
+</li><li class=menu-item>
+<a class=menu-item-link href=/tags/>Tags</a>
+</li><li class=menu-item>
+<a class=menu-item-link href=/categories/>Categories</a>
+</li>
+</ul>
 </nav>
 </header>
-<main class=main>
-<article class=post-single>
+<main id=main class=main>
+<div class=content-wrapper>
+<div id=content class=content>
+<article class=post>
 <header class=post-header>
-<h1 class=post-title>
-你應該擴充的 text object
-</h1>
+<h1 class=post-title>你應該擴充的 text object</h1>
 <div class=post-meta>
-September 22, 2020&nbsp;·&nbsp;amikai
+<span class=post-time> 2020-09-22 </span>
 </div>
 </header>
+<div class=post-toc id=post-toc>
+<h2 class=post-toc-title></h2>
+<div class="post-toc-content always-active">
+<nav id=TableOfContents></nav>
+</div>
+</div>
 <div class=post-content>
 <p>vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。</p>
 <p>operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。</p>
@@ -109,7 +126,7 @@ September 22, 2020&nbsp;·&nbsp;amikai
 <li>擴充 text object 的 plugin</li>
 <li>淺談 nvim-treesitter</li>
 </ul>
-<h1 id=operator--text-object>Operator & text object<a hidden class=anchor aria-hidden=true href=#operator--text-object>#</a></h1>
+<h1 id=operator--text-object>Operator & text object</h1>
 <p>Vim 定義了多個 operator 最常用的就是:</p>
 <ul>
 <li><code>d</code> delete (刪除)</li>
@@ -149,7 +166,7 @@ September 22, 2020&nbsp;·&nbsp;amikai
 <p>建議自己把 <code>:help motion.txt</code> 翻一翻，找出自己常用的 text object 看一看，寫成一個 cheat sheet</p>
 </blockquote>
 <p>雖然 vim 定義了大量的 text object，但可能大部分都不是你想要的，那就透過 plugin 來滿足需求吧。</p>
-<h1 id=簡單好用的-vim-textobj-user>簡單好用的 vim-textobj-user<a hidden class=anchor aria-hidden=true href=#簡單好用的-vim-textobj-user>#</a></h1>
+<h1 id=簡單好用的-vim-textobj-user>簡單好用的 vim-textobj-user</h1>
 <p>kana 所發展的 <a href=https://github.com/kana/vim-textobj-user>kana/vim-textobj-user</a> 是一個 lib，讓使用者藉由這個 lib 輕鬆的製作屬於自己的 text object，所以就有一些 plugin 基於此 lib 做出更多的 text object，這些 plugin 的名字通常都叫 vim-textobj-xxx 。</p>
 <p>使用 plugin 的方法為：</p>
 <ul>
@@ -157,10 +174,19 @@ September 22, 2020&nbsp;·&nbsp;amikai
 <li>在 <a href=https://github.com/kana/vim-textobj-user/wiki>wiki</a> 裡查看自己所需的 text object plugin，並且安裝</li>
 </ul>
 <p>舉例來說：我最常用的兩個 text object 是 comment 和 funtion parameter，所以我選定 <a href=https://github.com/glts/vim-textobj-comment>glts/vim-textobj-comment</a> 和 <a href=https://github.com/sgur/vim-textobj-parameter>sgur/vim-textobj-parameter</a></p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-vim data-lang=vim><span style=color:#a6e22e>Plug</span> <span style=color:#e6db74>&#39;kana/vim-textobj-user&#39;</span><span style=color:#960050;background-color:#1e0010>
-</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#a6e22e>Plug</span> <span style=color:#e6db74>&#39;glts/vim-textobj-comment&#39;</span><span style=color:#960050;background-color:#1e0010>
-</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#a6e22e>Plug</span> <span style=color:#e6db74>&#39;sgur/vim-textobj-parameter&#39;</span><span style=color:#960050;background-color:#1e0010>
-</span></code></pre></div><p>vim-textobj-comment 提供了：</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-vim data-lang=vim><span class=nx>Plug</span> <span class=s1>&#39;kana/vim-textobj-user&#39;</span><span class=err>
+</span><span class=err></span><span class=nx>Plug</span> <span class=s1>&#39;glts/vim-textobj-comment&#39;</span><span class=err>
+</span><span class=err></span><span class=nx>Plug</span> <span class=s1>&#39;sgur/vim-textobj-parameter&#39;</span><span class=err>
+</span></code></pre></td></tr></table>
+</div>
+</div><p>vim-textobj-comment 提供了：</p>
 <ul>
 <li><code>ic</code>：comment 內容</li>
 <li><code>ac</code>：comment 內容 + comment 符號</li>
@@ -170,7 +196,7 @@ September 22, 2020&nbsp;·&nbsp;amikai
 <li><code>i,</code>：參數</li>
 <li><code>a,</code>：參數符號 + 分隔符號 (也就是逗號)</li>
 </ul>
-<h1 id=更細膩的-text-object---targetsvim>更細膩的 text object - targets.vim<a hidden class=anchor aria-hidden=true href=#更細膩的-text-object---targetsvim>#</a></h1>
+<h1 id=更細膩的-text-object---targetsvim>更細膩的 text object - targets.vim</h1>
 <p><a href=https://github.com/wellle/targets.vim>wellle/targets.vim</a> 把 text object 的種類拆成四類型：</p>
 <ul>
 <li>Pair text objects - <code>(</code> <code>)</code> <code>{</code> <code>}</code> <code>[</code> <code>]</code> <code>&lt;</code> <code>></code></li>
@@ -192,7 +218,21 @@ September 22, 2020&nbsp;·&nbsp;amikai
 </ul>
 <p>加上 <code>n</code> 和 <code>l</code> 的話就是下一個跟上一個</p>
 <p><code>.</code> 表示游標所在位置</p>
-<pre><code>                           ..........
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>                           ..........
 a ( b ( cccccccc ) d ) ( e ( ffffff ) g ) ( h ( iiiiiiii ) j ) k
   │││ ││└ 2Il) ┘││││││││││ ││└ I) ┘││││││││││ ││└ 2In) ┘│││││││
   │││ │└─ 2il) ─┘│││││││││ │└─ i) ─┘│││││││││ │└─ 2in) ─┘││││││
@@ -202,8 +242,10 @@ a ( b ( cccccccc ) d ) ( e ( ffffff ) g ) ( h ( iiiiiiii ) j ) k
   │└────── il) ─────┘│││└──── 2i) ─────┘│││└────── in) ─────┘││
   ├─────── al) ──────┘│├───── 2a) ──────┘│├─────── an) ──────┘│
   └─────── Al) ───────┘└───── 2A) ───────┘└─────── An) ───────┘
-</code></pre><p>target.vim 提供的 text object 實在太多太複雜，所以很貼心的做了 <a href=https://github.com/wellle/targets.vim/blob/master/cheatsheet.md>cheat sheet</a></p>
-<h1 id=syntax-相關-text-object>syntax 相關 text object<a hidden class=anchor aria-hidden=true href=#syntax-相關-text-object>#</a></h1>
+</code></pre></td></tr></table>
+</div>
+</div><p>target.vim 提供的 text object 實在太多太複雜，所以很貼心的做了 <a href=https://github.com/wellle/targets.vim/blob/master/cheatsheet.md>cheat sheet</a></p>
+<h1 id=syntax-相關-text-object>syntax 相關 text object</h1>
 <p>以上所提到的 text object 都是和程式語言較無相關的 text object。程式語言相關的 text object，比如說 function, class, structure⋯⋯，這些相關的 text object plugin 相對來說比較少見。</p>
 <p>vim 並沒有提供一個介面直接拿取 syntax tree 的某一個 node，所以現在的所有 text object 的 plugin 都是靠 regex 或是其他字串比對的方式。假如想要一個 function 的 text object，就必須在每種語言都用 regex 或字串比對做一遍，相當的麻煩，<a href=https://github.com/kana/vim-textobj-function>kana/vim-textobj-function</a> 就是一個例子，目前只提供三種語言，並且每種語言實做一次。</p>
 <p>一個 text object 為主的 plugin 想要集成所有的 syntax 相關 text object 變得不太可能，所以這些 syntax 相關 text object plugin 通常都已一種語言為主，或是附屬在某些語言 plugin 底下：</p>
@@ -212,7 +254,7 @@ a ( b ( cccccccc ) d ) ( e ( ffffff ) g ) ( h ( iiiiiiii ) j ) k
 <li><a href=https://github.com/sgur/vim-textobj-parameter>sgur/vim-textobj-parameter</a> 為 python syntax 相關的 text object</li>
 <li><a href=https://github.com/mjbrownie/django-template-textobjects>mjbrownie/django-template-textobjects</a> 為 django-template 相關的 text object</li>
 </ul>
-<h1 id=救世主-treesitter>救世主 treesitter<a hidden class=anchor aria-hidden=true href=#救世主-treesitter>#</a></h1>
+<h1 id=救世主-treesitter>救世主 treesitter</h1>
 <p>一個 text object 為主的 plugin 想要集成所有的 syntax 相關 text object 真的不可能達到嗎？
 等到 Treesitter 被 neovim 整合完成後一切將變得簡單許多。</p>
 <p>Treesitter 簡單來講就是個 parser，可以使用它建立 syntax tree，官方介紹如下：
@@ -220,11 +262,11 @@ Tree-sitter is a parser generator tool and an incremental parsing library. It ca
 <p>neovim 0.5 版的目標就是要將 treesitter 整合，完成之後將可在 neovim 裡使用 treesitter 相關的 api，拿到了 syntax tree， 要抓到 text object 變得容易許多。別說做 text object plugin 了，連 syntax highlight, code folding 等相關 plugin 都可以不需倚賴 regex ，而目前已經有基於 treesitter 的 plugin 了：
 <strong><a href=https://github.com/nvim-treesitter/nvim-treesitter>nvim-treesitter/nvim-treesitter</a></strong></p>
 <p>詳見 <code>:help treesitter-parsers</code></p>
-<h1 id=結語>結語<a hidden class=anchor aria-hidden=true href=#結語>#</a></h1>
+<h1 id=結語>結語</h1>
 <p><a href=https://github.com/wellle/targets.vim>wellle/targets.vim</a> 和 <a href=https://github.com/kana/vim-textobj-user>kana/vim-textobj-user</a> 在開發上使用截然不同的方式，前者定義好大量細膩的 text object，後者則是一個 lib，由使用者以此 lib 為基礎在開發 plugin。</p>
 <p>對我來說，內建的 text object 已經足夠強大幾乎滿足需求，只需要在做一點補強，像是常用的 comment 和 funtion parameter 就沒有被 vim 定義。而 target.vim 大量細膩的 text object 使用情境都比較特殊，所以我就選擇了 vim-textobj-user 陣營——只選擇自己所需要的安裝，不會有多餘的功能。</p>
 <p><a href=https://github.com/nvim-treesitter/nvim-treesitter>nvim-treesitter/nvim-treesitter</a> 倚賴 syntax tree 解決了使用 regex 開發 text object plugin 的麻煩，而且更精準，可以預見 neovim 0.5 完成後的未來，syntax 相關的 text object plugin 將會被此 plugin 統一。</p>
-<h1 id=reference>Reference<a hidden class=anchor aria-hidden=true href=#reference>#</a></h1>
+<h1 id=reference>Reference</h1>
 <ul>
 <li><a href=https://codeinthehole.com/tips/vim-text-objects/>https://codeinthehole.com/tips/vim-text-objects/</a></li>
 <li><a href=https://www.tandrewnichols.me/motions-operators-text-objects-introduction/>https://www.tandrewnichols.me/motions-operators-text-objects-introduction/</a></li>
@@ -232,27 +274,60 @@ Tree-sitter is a parser generator tool and an incremental parsing library. It ca
 </ul>
 </div>
 <footer class=post-footer>
-<ul class=post-tags>
-<li><a href=https://amikai.github.io/tags/vim/>vim</a></li>
-<li><a href=https://amikai.github.io/tags/neovim/>neovim</a></li>
-</ul>
-</footer>
-<script src=https://utteranc.es/client.js repo=amikai/my_hugo_blog_utterances issue-term=title label=amikai/my_hugo_blog_utterances theme=github-light crossorigin=anonymous async></script>
-</article>
-</main><footer class=footer>
-<span>&copy; 2021 <a href=https://amikai.github.io>no code no pain</a></span>
-<span>&#183;</span>
-<span>Powered by <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a></span>
-<span>&#183;</span>
-<span>Theme <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a></span>
-</footer>
-<a href=#top aria-label="go to top" title="Go to Top (Alt + G)">
-<button class=top-link id=top-link type=button accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
-</button>
+<div class=post-tags>
+<a href=/tags/vim/>vim</a>
+<a href=/tags/neovim/>neovim</a>
+</div>
+<nav class=post-nav>
+<a class=prev href=/2020/09/29/vim-tips-highlight-yank-region/>
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">vim 高亮 yank 區域</span>
+<span class="prev-text nav-mobile"></span>
 </a>
-<script defer src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
-<script>window.onload=function(){localStorage.getItem("menu-scroll-position")&&(document.getElementById('menu').scrollLeft=localStorage.getItem("menu-scroll-position"))};function menu_on_scroll(){localStorage.setItem("menu-scroll-position",document.getElementById('menu').scrollLeft)}document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
-<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
-<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<a class=next href=/2020/09/10/vim-make/>
+<span class="next-text nav-default">誰說不能在 vim 裡編譯，從 :make 到 :Make</span>
+<span class="next-text nav-mobile"></span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<script src=https://utteranc.es/client.js repo=amikai/my_hugo_blog_utterances issue-term=pathname theme=github-light crossorigin=anonymous async></script>
+<noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript>
+</div>
+</main>
+<footer id=footer class=footer>
+<div class=social-links>
+<a href=https://www.linkedin.com/in/yun-kai-chuang-122064a5/ class="iconfont icon-linkedin" title=linkedin></a>
+<a href=https://github.com/amikai class="iconfont icon-github" title=github></a>
+<a href=https://amikai.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a>
+</div>
+<div class=copyright>
+<span class=power-by>
+%!(EXTRA string=<a class=hexo-link href=https://gohugo.io>Hugo</a>)
+</span>
+<span class=division>|</span>
+<span class=theme-info>
+-
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a>
+</span>
+<span class=copyright-year>
+&copy;
+-
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span></span>
+</span>
+</div>
+</footer>
+<div class=back-to-top id=back-to-top>
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script type=text/javascript src=/lib/jquery/jquery-3.2.1.min.js></script>
+<script type=text/javascript src=/lib/slideout/slideout-1.0.1.min.js></script>
+<script type=text/javascript src=/lib/fancybox/jquery.fancybox-3.1.20.min.js></script>
+<script type=text/javascript src=/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js></script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-172478407-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
 </body>
 </html>

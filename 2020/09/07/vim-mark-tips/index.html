@@ -1,106 +1,128 @@
-<!doctype html><html lang=zh dir=auto>
-<head><meta charset=utf-8>
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
-<meta name=robots content="index, follow">
-<title>聊聊 vim mark 使用情境 - code 參照 | no code no pain</title>
-<meta name=keywords content="vim,neovim">
-<meta name=description content="寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999 行。
-另一種情境則是在寫測試的時候會和實作交互參照，而測試程式往往和實作程式會拆開不同的檔案，所以就必須要一直跳轉。
-使用 split 的方式縱然是一個不錯的方式，但是如果要參照的點大於三個，就將螢幕切成三份，那工程師就相當痛苦了，不是每個人都用這種電腦螢幕啊。這種 split 的方式還有另一個缺點：如果手殘將檔案關掉，就得重找。 Mark vim 的 mark 取名或許源自於 bookmark (書籤) 這個字，書籤的用意在於能快速找回你上次看的那一頁，而 vim mark 的用意也是如此：能快速找回你剛剛在看 code 的地方。
-vim 的 mark 分為三種：
- Local mark a-z： 每一個 file 裡皆有自己的 local mark，也就是說檔案 A 可以有 mark a, 檔案 B 裡也可以有自己的 mark a Global mark A-Z： 此種 mark 是全域的，也就是說在檔案 A 裡所看到的 mark A 和 B 檔案 B 裡的 mark A 是一樣的 Special mark：其他神奇的 mark，不在此文章討論範圍  mark 的基本使用：">
-<meta name=author content="amikai">
+<!doctype html><html lang=zh>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>聊聊 vim mark 使用情境 - code 參照 - amikai's blog</title>
+<meta name=renderer content="webkit">
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta http-equiv=cache-control content="no-transform">
+<meta http-equiv=cache-control content="no-siteapp">
+<meta name=theme-color content="#f8f5ec">
+<meta name=msapplication-navbutton-color content="#f8f5ec">
+<meta name=apple-mobile-web-app-capable content="yes">
+<meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec">
+<meta name=author content><meta name=description content="寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999"><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
+<meta name=generator content="Hugo 0.86.0 with theme even">
 <link rel=canonical href=https://amikai.github.io/2020/09/07/vim-mark-tips/>
-<link href=/assets/css/stylesheet.min.1e4b51002afd206b67ec98785f7d3a6d4fd0feb374e07bb018954cad57795586.css integrity="sha256-HktRACr9IGtn7Jh4X306bU/Q/rN04HuwGJVMrVd5VYY=" rel="preload stylesheet" as=style>
-<link rel=icon href=https://amikai.github.io/favicon.ico>
-<link rel=icon type=image/png sizes=16x16 href=https://amikai.github.io/favicon-16x16.png>
-<link rel=icon type=image/png sizes=32x32 href=https://amikai.github.io/favicon-32x32.png>
-<link rel=apple-touch-icon href=https://amikai.github.io/apple-touch-icon.png>
-<link rel=mask-icon href=https://amikai.github.io/safari-pinned-tab.svg>
-<meta name=theme-color content="#2e2e33">
-<meta name=msapplication-TileColor content="#2e2e33">
-<meta name=generator content="Hugo 0.86.0">
-<link rel=alternate hreflang=zh href=https://amikai.github.io/2020/09/07/vim-mark-tips/>
-<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-172478407-1','auto'),ga('send','pageview'))</script>
-<script async src=https://www.google-analytics.com/analytics.js></script>
+<link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png>
+<link rel=manifest href=/manifest.json>
+<link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5>
+<link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet>
+<link href=/lib/fancybox/jquery.fancybox-3.1.20.min.css rel=stylesheet>
 <meta property="og:title" content="聊聊 vim mark 使用情境 - code 參照">
-<meta property="og:description" content="寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999 行。
-另一種情境則是在寫測試的時候會和實作交互參照，而測試程式往往和實作程式會拆開不同的檔案，所以就必須要一直跳轉。
-使用 split 的方式縱然是一個不錯的方式，但是如果要參照的點大於三個，就將螢幕切成三份，那工程師就相當痛苦了，不是每個人都用這種電腦螢幕啊。這種 split 的方式還有另一個缺點：如果手殘將檔案關掉，就得重找。 Mark vim 的 mark 取名或許源自於 bookmark (書籤) 這個字，書籤的用意在於能快速找回你上次看的那一頁，而 vim mark 的用意也是如此：能快速找回你剛剛在看 code 的地方。
-vim 的 mark 分為三種：
- Local mark a-z： 每一個 file 裡皆有自己的 local mark，也就是說檔案 A 可以有 mark a, 檔案 B 裡也可以有自己的 mark a Global mark A-Z： 此種 mark 是全域的，也就是說在檔案 A 裡所看到的 mark A 和 B 檔案 B 裡的 mark A 是一樣的 Special mark：其他神奇的 mark，不在此文章討論範圍  mark 的基本使用：">
+<meta property="og:description" content="寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://amikai.github.io/2020/09/07/vim-mark-tips/"><meta property="og:image" content="https://amikai.github.io/2020/09/07/vim-mark-tips/cover.png"><meta property="article:section" content="posts">
+<meta property="og:url" content="https://amikai.github.io/2020/09/07/vim-mark-tips/"><meta property="og:image" content="https://amikai.github.io/2020/09/07/vim-mark-tips/cover.png"><meta property="article:section" content="post">
 <meta property="article:published_time" content="2020-09-07T15:03:01+00:00">
 <meta property="article:modified_time" content="2020-09-07T15:03:01+00:00">
-<meta name=twitter:card content="summary_large_image">
+<meta itemprop=name content="聊聊 vim mark 使用情境 - code 參照">
+<meta itemprop=description content="寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999"><meta itemprop=datePublished content="2020-09-07T15:03:01+00:00">
+<meta itemprop=dateModified content="2020-09-07T15:03:01+00:00">
+<meta itemprop=wordCount content="1013"><meta itemprop=image content="https://amikai.github.io/2020/09/07/vim-mark-tips/cover.png">
+<meta itemprop=keywords content="vim,neovim,"><meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://amikai.github.io/2020/09/07/vim-mark-tips/cover.png">
 <meta name=twitter:title content="聊聊 vim mark 使用情境 - code 參照">
-<meta name=twitter:description content="寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999 行。
-另一種情境則是在寫測試的時候會和實作交互參照，而測試程式往往和實作程式會拆開不同的檔案，所以就必須要一直跳轉。
-使用 split 的方式縱然是一個不錯的方式，但是如果要參照的點大於三個，就將螢幕切成三份，那工程師就相當痛苦了，不是每個人都用這種電腦螢幕啊。這種 split 的方式還有另一個缺點：如果手殘將檔案關掉，就得重找。 Mark vim 的 mark 取名或許源自於 bookmark (書籤) 這個字，書籤的用意在於能快速找回你上次看的那一頁，而 vim mark 的用意也是如此：能快速找回你剛剛在看 code 的地方。
-vim 的 mark 分為三種：
- Local mark a-z： 每一個 file 裡皆有自己的 local mark，也就是說檔案 A 可以有 mark a, 檔案 B 裡也可以有自己的 mark a Global mark A-Z： 此種 mark 是全域的，也就是說在檔案 A 裡所看到的 mark A 和 B 檔案 B 裡的 mark A 是一樣的 Special mark：其他神奇的 mark，不在此文章討論範圍  mark 的基本使用：">
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://amikai.github.io/posts/"},{"@type":"ListItem","position":3,"name":"聊聊 vim mark 使用情境 - code 參照","item":"https://amikai.github.io/2020/09/07/vim-mark-tips/"}]}</script>
-<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"聊聊 vim mark 使用情境 - code 參照","name":"聊聊 vim mark 使用情境 - code 參照","description":"寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999 行。\n另一種情境則是在寫測試的時候會和實作交互參照，而測試程式往往和實作程式會拆開不同的檔案，所以就必須要一直跳轉。\n使用 split 的方式縱然是一個不錯的方式，但是如果要參照的點大於三個，就將螢幕切成三份，那工程師就相當痛苦了，不是每個人都用這種電腦螢幕啊。這種 split 的方式還有另一個缺點：如果手殘將檔案關掉，就得重找。 Mark vim 的 mark 取名或許源自於 bookmark (書籤) 這個字，書籤的用意在於能快速找回你上次看的那一頁，而 vim mark 的用意也是如此：能快速找回你剛剛在看 code 的地方。\nvim 的 mark 分為三種：\n Local mark a-z： 每一個 file 裡皆有自己的 local mark，也就是說檔案 A 可以有 mark a, 檔案 B 裡也可以有自己的 mark a Global mark A-Z： 此種 mark 是全域的，也就是說在檔案 A 裡所看到的 mark A 和 B 檔案 B 裡的 mark A 是一樣的 Special mark：其他神奇的 mark，不在此文章討論範圍  mark 的基本使用：","keywords":["vim","neovim"],"articleBody":"寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999 行。\n另一種情境則是在寫測試的時候會和實作交互參照，而測試程式往往和實作程式會拆開不同的檔案，所以就必須要一直跳轉。\n使用 split 的方式縱然是一個不錯的方式，但是如果要參照的點大於三個，就將螢幕切成三份，那工程師就相當痛苦了，不是每個人都用這種電腦螢幕啊。這種 split 的方式還有另一個缺點：如果手殘將檔案關掉，就得重找。 Mark vim 的 mark 取名或許源自於 bookmark (書籤) 這個字，書籤的用意在於能快速找回你上次看的那一頁，而 vim mark 的用意也是如此：能快速找回你剛剛在看 code 的地方。\nvim 的 mark 分為三種：\n Local mark a-z： 每一個 file 裡皆有自己的 local mark，也就是說檔案 A 可以有 mark a, 檔案 B 裡也可以有自己的 mark a Global mark A-Z： 此種 mark 是全域的，也就是說在檔案 A 裡所看到的 mark A 和 B 檔案 B 裡的 mark A 是一樣的 Special mark：其他神奇的 mark，不在此文章討論範圍  mark 的基本使用：\n ma： 在這個地方設置 mark a mA： 在這個地方設置 mark A \u0008'a： 跳到 mark a 的這行 (此行的第一個非空白字元) `a： 精準的跳到你當初設置 mark a 的位置 (第幾行第幾列) :marks： 列出來所有 mark，有時候 mark 設置太多會忘  更多詳細操作請參照 Reference 3\n回到正題 還記得一開始的情境敘述嗎？ 雖然你已經知道要在 A file 第 10 行 mA， 在 B file 第 8 行 mB，C file 第 999 行 mC。\n實際上在寫 code 時我會這樣做：\n 我會先將我需要參照的地方找出並且 mark，以剛剛的例子來說就是在 A file 第 10 行 mA 在 B file 第 8 行 mB，C file 第 999 行 mC 使用 :vsplit 將螢幕切成兩邊，左邊寫 code，右邊當參照區域 \u0008需要參照 B 這個位置時，移動到參照區域 ，'B 再移動回寫 code 區域繼續寫  那 local mark 什麼時候用？ 當一個檔案大於 1000 行，寫的程式在 1001 行，但你需要參照的程式在第一行，也就是都在同一個 file 跳轉的時候可以使用。\nsearch 小技巧 每次在使用 / 搜尋一定會案 n 或 N 到處跳轉，尋找目標，常常找完了之後，忘記我原本的地方在哪了，此時就能先用 mark 記住後在開始用 / 查找。 由於常使用這種操作，所以直接這樣：\nnnoremap / ms/在/搜尋完後，要跳回原本的地方就 's 就好\n結語 人類總是會在大量的資料中迷失，並且花上很多時間查找和記憶，標記(或是書籤)就是其中一種解決方案，而且應用不只在書上，到處都可以看到類似的應用，像是檔案夾的標籤、英文書在最後會有的索引，然而在寫程式上也不例外。不管是在寫 code 上還是其他應用，好好的應用這些工具將能事半功倍。\nReference  https://medium.com/usevim/vim-101-marks-caad7106b241 https://medium.com/usevim/vim-101-practicing-marks-fc5778d8aaea https://vim.fandom.com/wiki/Using_marks  ","wordCount":"201","inLanguage":"zh","datePublished":"2020-09-07T15:03:01Z","dateModified":"2020-09-07T15:03:01Z","author":{"@type":"Person","name":"amikai"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://amikai.github.io/2020/09/07/vim-mark-tips/"},"publisher":{"@type":"Organization","name":"no code no pain","logo":{"@type":"ImageObject","url":"https://amikai.github.io/favicon.ico"}}}</script>
+<meta name=twitter:description content="寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]-->
 </head>
-<body id=top>
-<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
-<noscript>
-<style type=text/css>#theme-toggle,.top-link{display:none}</style>
-<style>@media(prefers-color-scheme:dark){:root{--theme:#1d1e20;--entry:#2e2e33;--primary:rgba(255, 255, 255, 0.84);--secondary:rgba(255, 255, 255, 0.56);--tertiary:rgba(255, 255, 255, 0.16);--content:rgba(255, 255, 255, 0.74);--hljs-bg:#2e2e33;--code-bg:#37383e;--border:#333}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
-</noscript>
-<header class=header>
-<nav class=nav>
-<div class=logo>
-<a href=https://amikai.github.io accesskey=h title="no code no pain (Alt + H)">no code no pain</a>
-<span class=logo-switches>
-<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-</button>
-<ul class=lang-switch><li>|</li>
-<li>
-<a href=https://amikai.github.io/en/ title=English aria-label=English>English</a>
+<body>
+<div id=mobile-navbar class=mobile-navbar>
+<div class=mobile-header-logo>
+<a href=/ class=logo>amikai's blog</a>
+</div>
+<div class=mobile-navbar-icon>
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav id=mobile-menu class="mobile-menu slideout-menu">
+<ul class=mobile-menu-list>
+<a href=/>
+<li class=mobile-menu-item>Home</li>
+</a><a href=/post/>
+<li class=mobile-menu-item>Archives</li>
+</a><a href=/tags/>
+<li class=mobile-menu-item>Tags</li>
+</a><a href=/categories/>
+<li class=mobile-menu-item>Categories</li>
+</a>
+</ul>
+<div class=language-selector>
+<ul class=languages-list>
+<li class="language-item active">
+<a href=https://amikai.github.io/2020/09/07/vim-mark-tips/>zh</a>
+</li>
+<li class=language-item>
+<a href=https://amikai.github.io/en/>en</a>
 </li>
 </ul>
-</span>
 </div>
-<ul id=menu onscroll=menu_on_scroll()>
-<li>
-<a href=https://amikai.github.io/archives title=Archive>
-<span>Archive</span>
-</a>
+</nav>
+<div class=container id=mobile-panel>
+<header id=header class=header>
+<div class=logo-wrapper>
+<a href=/ class=logo>amikai's blog</a>
+</div>
+<div class=language-selector>
+<ul class=languages-list>
+<li class="language-item active">
+<a href=https://amikai.github.io/2020/09/07/vim-mark-tips/>zh</a>
 </li>
-<li>
-<a href=https://amikai.github.io/categories/ title=Categories>
-<span>Categories</span>
-</a>
+<li class=language-item>
+<a href=https://amikai.github.io/en/>en</a>
 </li>
-<li>
-<a href=https://amikai.github.io/tags/ title=Tags>
-<span>Tags</span>
-</a>
-</li></ul>
+</ul>
+</div>
+<nav class=site-navbar>
+<ul id=menu class=menu>
+<li class=menu-item>
+<a class=menu-item-link href=/>Home</a>
+</li><li class=menu-item>
+<a class=menu-item-link href=/post/>Archives</a>
+</li><li class=menu-item>
+<a class=menu-item-link href=/tags/>Tags</a>
+</li><li class=menu-item>
+<a class=menu-item-link href=/categories/>Categories</a>
+</li>
+</ul>
 </nav>
 </header>
-<main class=main>
-<article class=post-single>
+<main id=main class=main>
+<div class=content-wrapper>
+<div id=content class=content>
+<article class=post>
 <header class=post-header>
-<h1 class=post-title>
-聊聊 vim mark 使用情境 - code 參照
-</h1>
+<h1 class=post-title>聊聊 vim mark 使用情境 - code 參照</h1>
 <div class=post-meta>
-September 7, 2020&nbsp;·&nbsp;amikai
+<span class=post-time> 2020-09-07 </span>
 </div>
 </header>
+<div class=post-toc id=post-toc>
+<h2 class=post-toc-title></h2>
+<div class="post-toc-content always-active">
+<nav id=TableOfContents></nav>
+</div>
+</div>
 <div class=post-content>
-<p><img loading=lazy src=cover.png alt>
+<p><img src=cover.png alt>
 寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999 行。</p>
 <p>另一種情境則是在寫測試的時候會和實作交互參照，而測試程式往往和實作程式會拆開不同的檔案，所以就必須要一直跳轉。</p>
 <p>使用 split 的方式縱然是一個不錯的方式，但是如果要參照的點大於三個，就將螢幕切成三份，那工程師就相當痛苦了，不是每個人都用這種電腦螢幕啊。這種 split 的方式還有另一個缺點：如果手殘將檔案關掉，就得重找。
-<img loading=lazy src=cj890.jpg alt>
-</p>
-<h1 id=mark>Mark<a hidden class=anchor aria-hidden=true href=#mark>#</a></h1>
+<img src=cj890.jpg alt></p>
+<h1 id=mark>Mark</h1>
 <p>vim 的 mark 取名或許源自於 bookmark (書籤) 這個字，書籤的用意在於能快速找回你上次看的那一頁，而 vim mark 的用意也是如此：能快速找回你剛剛在看 code 的地方。</p>
 <p>vim 的 mark 分為三種：</p>
 <ul>
@@ -117,7 +139,7 @@ September 7, 2020&nbsp;·&nbsp;amikai
 <li><code>:marks</code>： 列出來所有 mark，有時候 mark 設置太多會忘</li>
 </ul>
 <p>更多詳細操作請參照 Reference 3</p>
-<h1 id=回到正題>回到正題<a hidden class=anchor aria-hidden=true href=#回到正題>#</a></h1>
+<h1 id=回到正題>回到正題</h1>
 <p>還記得一開始的情境敘述嗎？
 雖然你已經知道要在 A file 第 10 行 <code>mA</code>， 在 B file 第 8 行 <code>mB</code>，C file 第 999 行 <code>mC</code>。</p>
 <p>實際上在寫 code 時我會這樣做：</p>
@@ -126,18 +148,24 @@ September 7, 2020&nbsp;·&nbsp;amikai
 <li>使用 <code>:vsplit</code> 將螢幕切成兩邊，左邊寫 code，右邊當參照區域</li>
 <li>需要參照 B 這個位置時，移動到參照區域 ，<code>'B</code> 再移動回寫 code 區域繼續寫</li>
 </ul>
-<p><img loading=lazy src=mark_show.png alt>
-</p>
+<p><img src=mark_show.png alt></p>
 <p>那 local mark 什麼時候用？
 當一個檔案大於 1000 行，寫的程式在 1001 行，但你需要參照的程式在第一行，也就是都在同一個 file 跳轉的時候可以使用。</p>
-<h1 id=search-小技巧>search 小技巧<a hidden class=anchor aria-hidden=true href=#search-小技巧>#</a></h1>
+<h1 id=search-小技巧>search 小技巧</h1>
 <p>每次在使用 <code>/</code> 搜尋一定會案 <code>n</code> 或 <code>N</code> 到處跳轉，尋找目標，常常找完了之後，忘記我原本的地方在哪了，此時就能先用 mark 記住後在開始用 <code>/</code> 查找。
 由於常使用這種操作，所以直接這樣：</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-vim data-lang=vim><span style=color:#a6e22e>nnoremap</span> <span style=color:#e6db74>/ ms/</span><span style=color:#960050;background-color:#1e0010>
-</span></code></pre></div><p>在<code>/</code>搜尋完後，要跳回原本的地方就 <code>'s</code> 就好</p>
-<h1 id=結語>結語<a hidden class=anchor aria-hidden=true href=#結語>#</a></h1>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-vim data-lang=vim><span class=nx>nnoremap</span> <span class=sr>/ ms/</span><span class=err>
+</span></code></pre></td></tr></table>
+</div>
+</div><p>在<code>/</code>搜尋完後，要跳回原本的地方就 <code>'s</code> 就好</p>
+<h1 id=結語>結語</h1>
 <p>人類總是會在大量的資料中迷失，並且花上很多時間查找和記憶，標記(或是書籤)就是其中一種解決方案，而且應用不只在書上，到處都可以看到類似的應用，像是檔案夾的標籤、英文書在最後會有的索引，然而在寫程式上也不例外。不管是在寫 code 上還是其他應用，好好的應用這些工具將能事半功倍。</p>
-<h1 id=reference>Reference<a hidden class=anchor aria-hidden=true href=#reference>#</a></h1>
+<h1 id=reference>Reference</h1>
 <ol>
 <li><a href=https://medium.com/usevim/vim-101-marks-caad7106b241>https://medium.com/usevim/vim-101-marks-caad7106b241</a></li>
 <li><a href=https://medium.com/usevim/vim-101-practicing-marks-fc5778d8aaea>https://medium.com/usevim/vim-101-practicing-marks-fc5778d8aaea</a></li>
@@ -145,27 +173,60 @@ September 7, 2020&nbsp;·&nbsp;amikai
 </ol>
 </div>
 <footer class=post-footer>
-<ul class=post-tags>
-<li><a href=https://amikai.github.io/tags/vim/>vim</a></li>
-<li><a href=https://amikai.github.io/tags/neovim/>neovim</a></li>
-</ul>
-</footer>
-<script src=https://utteranc.es/client.js repo=amikai/my_hugo_blog_utterances issue-term=title label=amikai/my_hugo_blog_utterances theme=github-light crossorigin=anonymous async></script>
-</article>
-</main><footer class=footer>
-<span>&copy; 2021 <a href=https://amikai.github.io>no code no pain</a></span>
-<span>&#183;</span>
-<span>Powered by <a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a></span>
-<span>&#183;</span>
-<span>Theme <a href=https://git.io/hugopapermod rel=noopener target=_blank>PaperMod</a></span>
-</footer>
-<a href=#top aria-label="go to top" title="Go to Top (Alt + G)">
-<button class=top-link id=top-link type=button accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
-</button>
+<div class=post-tags>
+<a href=/tags/vim/>vim</a>
+<a href=/tags/neovim/>neovim</a>
+</div>
+<nav class=post-nav>
+<a class=prev href=/2020/09/10/vim-make/>
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">誰說不能在 vim 裡編譯，從 :make 到 :Make</span>
+<span class="prev-text nav-mobile"></span>
 </a>
-<script defer src=/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5+kdJvBz5iKbt6B5PJI=" onload=hljs.initHighlightingOnLoad()></script>
-<script>window.onload=function(){localStorage.getItem("menu-scroll-position")&&(document.getElementById('menu').scrollLeft=localStorage.getItem("menu-scroll-position"))};function menu_on_scroll(){localStorage.setItem("menu-scroll-position",document.getElementById('menu').scrollLeft)}document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})})</script>
-<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
-<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<a class=next href=/2020/09/03/go_neovim_env/>
+<span class="next-text nav-default">Golang 開發環境 - 使用 neovim</span>
+<span class="next-text nav-mobile"></span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<script src=https://utteranc.es/client.js repo=amikai/my_hugo_blog_utterances issue-term=pathname theme=github-light crossorigin=anonymous async></script>
+<noscript>Please enable JavaScript to view the <a href=https://github.com/utterance>comments powered by utterances.</a></noscript>
+</div>
+</main>
+<footer id=footer class=footer>
+<div class=social-links>
+<a href=https://www.linkedin.com/in/yun-kai-chuang-122064a5/ class="iconfont icon-linkedin" title=linkedin></a>
+<a href=https://github.com/amikai class="iconfont icon-github" title=github></a>
+<a href=https://amikai.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a>
+</div>
+<div class=copyright>
+<span class=power-by>
+%!(EXTRA string=<a class=hexo-link href=https://gohugo.io>Hugo</a>)
+</span>
+<span class=division>|</span>
+<span class=theme-info>
+-
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a>
+</span>
+<span class=copyright-year>
+&copy;
+-
+2021<span class=heart><i class="iconfont icon-heart"></i></span><span></span>
+</span>
+</div>
+</footer>
+<div class=back-to-top id=back-to-top>
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script type=text/javascript src=/lib/jquery/jquery-3.2.1.min.js></script>
+<script type=text/javascript src=/lib/slideout/slideout-1.0.1.min.js></script>
+<script type=text/javascript src=/lib/fancybox/jquery.fancybox-3.1.20.min.js></script>
+<script type=text/javascript src=/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js></script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga('create','UA-172478407-1','auto'),ga('send','pageview'))</script>
+<script async src=https://www.google-analytics.com/analytics.js></script>
 </body>
 </html>
