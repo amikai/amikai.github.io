@@ -30,7 +30,7 @@
 <meta itemprop=name content="Golang 開發環境 - 使用 neovim 0.5">
 <meta itemprop=description content="Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所有工作不會再被單一線程給擋住 (在過去 linter 檢查時，是無法寫程式碼的)，大大提升了可用性和使用者體驗，朝現"><meta itemprop=datePublished content="2021-08-16T15:20:34+08:00">
 <meta itemprop=dateModified content="2021-08-16T15:20:34+08:00">
-<meta itemprop=wordCount content="2220">
+<meta itemprop=wordCount content="2216">
 <meta itemprop=keywords content="vim,neovim,"><meta name=twitter:card content="summary">
 <meta name=twitter:title content="Golang 開發環境 - 使用 neovim 0.5">
 <meta name=twitter:description content="Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所有工作不會再被單一線程給擋住 (在過去 linter 檢查時，是無法寫程式碼的)，大大提升了可用性和使用者體驗，朝現"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
@@ -500,8 +500,7 @@
 <span class=n>vim.api</span><span class=p>.</span><span class=n>nvim_set_keymap</span><span class=p>(</span><span class=s1>&#39;n&#39;</span><span class=p>,</span> <span class=s1>&#39;]d&#39;</span><span class=p>,</span> <span class=s1>&#39;&lt;cmd&gt;lua vim.lsp.diagnostic.goto_next()&lt;CR&gt;&#39;</span><span class=p>,{</span><span class=n>silent</span> <span class=o>=</span> <span class=kc>true</span><span class=p>,</span> <span class=n>noremap</span> <span class=o>=</span> <span class=kc>true</span><span class=p>})</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>效果如下</p>
-<h2 id=code-outline---tagbar>Code outline - tagbar</h2>
+</div><h2 id=code-outline---tagbar>Code outline - tagbar</h2>
 <p><img src=tagbar.png alt=tagbar></p>
 <p>安裝 gotags:
 <code>go get -u github.com/jstemmer/gotags</code></p>
