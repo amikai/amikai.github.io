@@ -30,7 +30,7 @@
 <meta itemprop=name content="Golang 開發環境 - 使用 neovim 0.5">
 <meta itemprop=description content="Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所有工作不會再被單一線程給擋住 (在過去 linter 檢查時，是無法寫程式碼的)，大大提升了可用性和使用者體驗，朝現"><meta itemprop=datePublished content="2021-08-16T15:20:34+08:00">
 <meta itemprop=dateModified content="2021-08-16T15:20:34+08:00">
-<meta itemprop=wordCount content="2216">
+<meta itemprop=wordCount content="2365">
 <meta itemprop=keywords content="vim,neovim,"><meta name=twitter:card content="summary">
 <meta name=twitter:title content="Golang 開發環境 - 使用 neovim 0.5">
 <meta name=twitter:description content="Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所有工作不會再被單一線程給擋住 (在過去 linter 檢查時，是無法寫程式碼的)，大大提升了可用性和使用者體驗，朝現"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
@@ -125,8 +125,13 @@
 <li>
 <p>built-in LSP client (0.5)：內建 LSP client，使用者可以透過 neovim LSP api 和 LSP server 互動</p>
 </li>
+<li>
+<p>支援 init.lua：可以用 lua 撰寫 vimrc，本章也會用到此功能</p>
+</li>
 </ul>
+<blockquote>
 <p>2021 的 0.5 版本發佈，除了古老的文字介面，neovim 可說是不折不扣的現代編輯器。</p>
+</blockquote>
 <h1 id=編輯器基本功能>編輯器基本功能</h1>
 <p>一個現代的編輯器應該有以下幾種基本功能：</p>
 <ul>
@@ -155,17 +160,19 @@
 <p>Fuzzy Finder - 透過 fuzzy finder 找到想要的檔案或是專案裡的字串等等</p>
 </li>
 </ul>
+<blockquote>
 <p>本篇將會使用短小的 lua 設定檔達到基礎 go 語言的開發環境，並產出 init.lua 檔案</p>
+</blockquote>
 <h1 id=預備動作>預備動作</h1>
 <ul>
 <li>
-<p>安裝 neovim 0.5 stable</p>
+<p>安裝 neovim 0.5 stable <code>brew install neovim</code></p>
 </li>
 <li>
-<p>知道在 neovim 中如何使用 lua，可參考 <a href=https://github.com/nanotee/nvim-lua-guide>nanotee/nvim-lua-guide</a></p>
+<p>如果不知道在 neovim 裏如何使用 lua，可參考 <a href=https://github.com/nanotee/nvim-lua-guide>nanotee/nvim-lua-guide</a></p>
 </li>
 <li>
-<p>知道如何使用 <a href=https://github.com/wbthomason/packer.nvim>packer.nvim</a> 管理套件</p>
+<p>本章使用到的 <a href=https://github.com/wbthomason/packer.nvim>packer.nvim</a> ，可以翻閱一下 README，知道基本用法和操作</p>
 </li>
 </ul>
 <h1 id=initlua-設置>init.lua 設置</h1>
@@ -197,7 +204,7 @@
 </div>
 </div><h2 id=file-explorer---nerdtree>File explorer - nerdtree</h2>
 <p><img src=nerdtree.png alt=nerdtree></p>
-<p>雖然在<a href=https://amikai.github.io/2020/09/03/go_neovim_env/>上篇</a>我不推薦使用 nerdtree，並且端出了需要高度手動配置的 defx.nvim。經過仔細思考之後發現這是個人偏好，不應該拉讀者一起折騰，沒有什麼特殊需求的話，大部分的情況下 nerdtree 是很夠用的，使用者體驗也不錯。</p>
+<p>雖然在<a href=https://amikai.github.io/2020/09/03/go_neovim_env/>上篇</a>我不推薦使用 nerdtree，並且端出了需要高度手動配置的 defx.nvim。經過仔細思考之後發現這是個人偏好，不應該拉讀者一起折騰，沒有什麼特殊需求的話，大部分的情況下 nerdtree 是很夠用的，使用者體驗也不錯。老牌的 nerdtree 使用上相對穩定，也會找到較多的討論。</p>
 <p>安裝 nerdtree</p>
 <div class=highlight><div class=chroma>
 <table class=lntable><tr><td class=lntd>
@@ -236,7 +243,7 @@
 </li>
 </ul>
 <h2 id=vim-go>vim-go</h2>
-<p>強大的 vim-go 提供了各式各樣 go 語言的開發功能，包括了 auto completion, code navigation, background compilation, code format 的功能，我將會介紹 vim-go 如何使用這些功能</p>
+<p>強大的 vim-go 提供了各式各樣 go 語言的開發功能，每一個使用 vim 開發 go 的人一定都用過。它包括了 auto completion, code navigation, background compilation, code format&mldr;功能，我將會介紹 vim-go 如何使用這些功能</p>
 <p>安裝 vim-go</p>
 <div class=highlight><div class=chroma>
 <table class=lntable><tr><td class=lntd>
@@ -261,7 +268,7 @@
 </code></pre></td></tr></table>
 </div>
 </div><h2 id=auto-complete>Auto-complete</h2>
-<p>vim-go 提供了 auto completion 使用 omnifunc 實作 (<code>:help omnifunc</code>)，omnifunc 使用 <code>&lt;c-x>&lt;c-o></code> 觸發並彈出候選補全選單，<code>&lt;c-x>&lt;c-o></code> 按起來很不順手，為了更好的體驗，將設定成：</p>
+<p>vim-go 提供的 auto completion 使用 omnifunc 實作 (<code>:help omnifunc</code>)，omnifunc 使用 <code>&lt;c-x>&lt;c-o></code> 觸發並彈出候選補全選單，按起來很不順手，為了更好的體驗，我將設定成：</p>
 <ul>
 <li>
 <p><code>&lt;tab></code> 觸發候補選單或是跳到下一個候選，沒有候選時就輸出 tab 字元</p>
@@ -364,7 +371,6 @@
 </code></pre></td></tr></table>
 </div>
 </div><h2 id=code-navigation---vim-go>Code navigation - vim-go</h2>
-<p>一樣使用 vim-go 所提供的功能</p>
 <ul>
 <li>
 <p><code>:GoDef</code> 或是 <code>gd</code> 跳轉到定義 (<code>gd</code> 映射是 vim-go 內建，不需額外設定)</p>
@@ -389,7 +395,7 @@
 </code></pre></td></tr></table>
 </div>
 </div><h2 id=background-compile---vim-go>Background compile - vim-go</h2>
-<p>vim-go 提供了編譯和執行的功能</p>
+<p>vim-go 提供了編譯和執行的指令，可以輕鬆在 vim 裏編譯、執行</p>
 <ul>
 <li>
 <p><code>:GoRun</code> 跑起 main package</p>
@@ -503,9 +509,16 @@
 </div>
 </div><h2 id=code-outline---tagbar>Code outline - tagbar</h2>
 <p><img src=tagbar.png alt=tagbar></p>
-<p>安裝 gotags:
-<code>go get -u github.com/jstemmer/gotags</code></p>
-<p>直接照 gotags 文件的設定</p>
+<p>安裝 gotags:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>$ go get -u github.com/jstemmer/gotags
+</code></pre></td></tr></table>
+</div>
+</div><p>直接照 gotags 文件的設定</p>
 <div class=highlight><div class=chroma>
 <table class=lntable><tr><td class=lntd>
 <pre tabindex=0 class=chroma><code><span class=lnt>1
@@ -598,9 +611,18 @@
 </div>
 </div><h2 id=fuzzy-finder---telescope>Fuzzy finder - Telescope</h2>
 <p><img src=telescope.png alt=telescope></p>
-<p>安裝 ripgrep，telescope 的 live_grep 和 find_files 是預設使用 ripgrep</p>
-<p><code>brew install ripgrep</code></p>
-<p>安裝 telescope</p>
+<p>作為 neovim built-in LSP client 的主要開發者 tjdevries 所主導開發的 fuzzy finder，早晚會成為 neovim 界 fuzzy finder 的主流，在大部分的使用情境下可以取代 fzf.vim，並且使用 lua 開發。</p>
+<p>Telescope 的 live_grep 和 find_files 是預設使用 ripgrep
+安裝 rigrep</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>$ brew install ripgrep
+</code></pre></td></tr></table>
+</div>
+</div><p>安裝 telescope</p>
 <div class=highlight><div class=chroma>
 <table class=lntable><tr><td class=lntd>
 <pre tabindex=0 class=chroma><code><span class=lnt>1
@@ -642,7 +664,9 @@
 </code></pre></td></tr></table>
 </div>
 </div><h1 id=結語>結語</h1>
+<blockquote>
 <p>最後完成的 <a href=init.lua>init.lua</a>，貼上內容重開 neovim 後，記得使用 <code>PackerSync</code> 安裝套件</p>
+</blockquote>
 <p>本篇的用意和<a href=https://amikai.github.io/2020/09/03/go_neovim_env/>上篇</a>一樣，盡量用精簡的設定檔和少量的套件打造一個短小精幹的 go 語言基礎開發環境，但使用效果和體驗和上篇效果相當，大部分的 go 語言開發功能都透用 vim-go 達成。</p>
 <p>雖然我針對了了七個從 coloscheme 到 fuzzy finder 重點功能，但這其實只是個開始，你應該把這篇所寫的設定檔當成一個骨架繼續改進，甚至只要記這七個重點功能的用意，替換成你覺得更棒的，比如說你覺得 fzf 比 telescope 更棒，或是你覺得 ycm 補全比 vim-go 內建的更優秀，那就換吧，往"打造成自己最合適的開發環境"這條道路前進。</p>
 <h1 id=參考來源>參考來源</h1>
