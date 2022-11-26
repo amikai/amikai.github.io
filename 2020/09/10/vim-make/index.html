@@ -11,7 +11,7 @@
 <meta name=msapplication-navbutton-color content="#f8f5ec">
 <meta name=apple-mobile-web-app-capable content="yes">
 <meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec">
-<meta name=author content><meta name=description content="前言 回想一下，上一次使用 vim 寫 code 到一個段落要編譯時，你是怎麼做的。 我看到大多數人的方式，就是將 terminal 切成兩塊，一塊寫 code，一塊編譯，若編譯有錯"><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
+<meta name=author content><meta name=description content="前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的 大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到"><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
 <meta name=generator content="Hugo 0.87.0 with theme even">
 <link rel=canonical href=https://amikai.github.io/2020/09/10/vim-make/>
 <link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png>
@@ -22,18 +22,18 @@
 <link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet>
 <link href=/lib/fancybox/jquery.fancybox-3.1.20.min.css rel=stylesheet>
 <meta property="og:title" content="誰說不能在 vim 裡編譯，從 :make 到 :Make">
-<meta property="og:description" content="前言 回想一下，上一次使用 vim 寫 code 到一個段落要編譯時，你是怎麼做的。 我看到大多數人的方式，就是將 terminal 切成兩塊，一塊寫 code，一塊編譯，若編譯有錯">
+<meta property="og:description" content="前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的 大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://amikai.github.io/2020/09/10/vim-make/"><meta property="article:section" content="post">
 <meta property="article:published_time" content="2020-09-10T00:21:31+00:00">
 <meta property="article:modified_time" content="2020-09-10T00:21:31+00:00">
 <meta itemprop=name content="誰說不能在 vim 裡編譯，從 :make 到 :Make">
-<meta itemprop=description content="前言 回想一下，上一次使用 vim 寫 code 到一個段落要編譯時，你是怎麼做的。 我看到大多數人的方式，就是將 terminal 切成兩塊，一塊寫 code，一塊編譯，若編譯有錯"><meta itemprop=datePublished content="2020-09-10T00:21:31+00:00">
+<meta itemprop=description content="前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的 大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到"><meta itemprop=datePublished content="2020-09-10T00:21:31+00:00">
 <meta itemprop=dateModified content="2020-09-10T00:21:31+00:00">
-<meta itemprop=wordCount content="1242">
+<meta itemprop=wordCount content="984">
 <meta itemprop=keywords content="vim,"><meta name=twitter:card content="summary">
 <meta name=twitter:title content="誰說不能在 vim 裡編譯，從 :make 到 :Make">
-<meta name=twitter:description content="前言 回想一下，上一次使用 vim 寫 code 到一個段落要編譯時，你是怎麼做的。 我看到大多數人的方式，就是將 terminal 切成兩塊，一塊寫 code，一塊編譯，若編譯有錯"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<meta name=twitter:description content="前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的 大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
 <script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]-->
 </head>
 <body>
@@ -94,34 +94,36 @@
 <div class="post-toc-content always-active">
 <nav id=TableOfContents>
 <ul>
-<li><a href=#基本款>基本款</a></li>
+<li><a href=#內建-make>內建 <code>:make</code></a></li>
 <li><a href=#如虎添翼的-quickfix-window>如虎添翼的 quickfix-window</a></li>
 </ul>
 <ul>
-<li><a href=#vim-使用-make-指令那不是只有寫-makefile-才能用嗎>vim 使用 <code>:make</code> 指令，那不是只有寫 Makefile 才能用嗎?</a></li>
+<li><a href=#vim-使用-make-指令那是不是只有-makefile-才能用>vim 使用 <code>:make</code> 指令，那是不是只有 Makefile 才能用?</a></li>
 </ul>
 </nav>
 </div>
 </div>
 <div class=post-content>
 <h1 id=前言>前言</h1>
-<p>回想一下，上一次使用 vim 寫 code 到一個段落要編譯時，你是怎麼做的。</p>
-<p>我看到大多數人的方式，就是將 terminal 切成兩塊，一塊寫 code，一塊編譯，若編譯有錯誤，再移動到寫 code 區塊更改。
-如果使用此方法，當專案有規模時，編譯錯誤一百條，看了編譯錯誤在哪之後，再將編譯錯誤的位置，從專案裡找出來，反覆來回 100 次，直到修正完畢。
-本文以 C 語言專案為例 (當然不是只有 C 語言才能這樣子幹，可看 Q&A)，聊聊強大的 vim 在這種情境下有什麼好的解決方案。
+<p>回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的</p>
+<p>大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到 vim 更改。若編譯錯誤可能上百個，使用該方式，每條錯誤都需要找到該檔案，並且來回修改即編譯，會相當沒效率。</p>
+<p>本文以 C 語言專案為例，聊聊強大的 vim 在這種情境下有什麼好的解決方案。
 <img src=tmux_split.png alt></p>
 <h1 id=強大的-make>強大的 <code>:make</code></h1>
-<h2 id=基本款>基本款</h2>
-<p>此次範例就拿 neovim 來編譯好了，根據官方文件要這樣編譯 <code>make CMAKE_BUILD_TYPE=Release</code>，所以在我在 vim 裡這樣編 <code>:make CMAKE_BUILD_TYPE=Release</code></p>
-<p>看起來噴了一點錯誤，案了 <code>enter</code> 似乎之後什麼事都沒發生，回到平常。
+<h2 id=內建-make>內建 <code>:make</code></h2>
+<p>此次範例就拿 neovim 原始碼，根據官方文件的編譯方法 <code>make CMAKE_BUILD_TYPE=Release</code>，所以我在 vim 裡進行編譯 <code>:make CMAKE_BUILD_TYPE=Release</code></p>
+<blockquote>
+<p>沒錯，在 vim 裡是可以用 <code>:make</code> 執行 Makefile</p>
+</blockquote>
+<p>編譯完後，可以看到下圖，出現許多錯誤，案 Enter 後則回到平常。
 <img src=make_cmd.png alt></p>
-<p>用 <code>:cl</code> 指令，喔幹!不是一點錯誤，是一堆錯誤，沒列出來根本不知道。
-<img src=clist_cmd.png alt></p>
-<p>重點來了!! 可以使用 <code>:cn</code> (<code>:cnext</code>) 跳到下一個錯誤位置，<code>:cp</code> (<code>:cprevious</code>) 跳轉到上一個錯誤位置，就不需要自己手動一個一個錯誤找出來。
-看上圖，可以觀察到，每一條錯誤前面都有一個數字，如果想要跳到特定錯誤去修那就使用 <code>:cc [number]</code>，跳轉到第一個錯誤就用 <code>:cc 12</code>，跳轉到第三個錯誤就用 <code>:cc 19</code>。</p>
-<p>火力展示:
-<img src=clist_demo.gif alt></p>
-<p>總結一下指令:</p>
+<p>這時可以使用 <code>:cl</code> 指令將這些錯誤列出來。</p>
+<p><img src=clist_cmd.png alt></p>
+<p>使用 <code>:cn</code> 或 <code>cnext</code> 跳到下一個錯誤位置</p>
+<p>使用 <code>:cp</code> 或 <code>:cprevious</code> 跳到上一個錯誤位置</p>
+<p>看上圖，可以觀察到每一條錯誤前面都有一個數字，可以使用 <code>:cc [number]</code> 跳轉到想要的錯誤，舉例：跳轉到第一個錯誤就用 <code>:cc 12</code>，跳轉到第三個錯誤就用 <code>:cc 19</code>。</p>
+<p>火力展示如下圖<img src=clist_demo.gif alt></p>
+<p>總結指令:</p>
 <ul>
 <li><code>:make</code>: 執行 makefile</li>
 <li><code>:cl</code>: 列出所有錯誤</li>
@@ -130,13 +132,18 @@
 <li><code>:cc [number]</code>: 跳轉到特定錯誤</li>
 </ul>
 <h2 id=如虎添翼的-quickfix-window>如虎添翼的 quickfix-window</h2>
-<p>編譯完之後，除了用 <code>:cl</code> 查看，另一種方式就是用 <code>:copen</code>，打下此指令之後，將會彈出 quickfix-window，列出的錯誤其實就是 <code>:clist</code> 的詳細版本， quickfix-window 只是提供了一種查找的方式。
-<img src=copen_cmd.png alt>
-移轉到 quickfix-window 後，移動到想要查看的錯誤，案 <code>enter</code> 即可跳轉到該錯誤位置，當然也能配合 <code>:cn</code>, <code>:cp</code>, <code>:cc [number]</code>，quickfix-window 會配合這些指令連動顯示目前位置。</p>
+<p>使用 <code>:clist</code> 可以快速的列出結果，案下 <code>&lt;enter></code> 則會關閉，並且開始執行跳轉的動做。</p>
+<p>但這還不夠方便，當 <code>:clist</code> 列出來的結果很多條可能超過螢幕，並且每次想重新查詢一次都得在打一次指令，而且不能在這些文字進行字串搜尋。</p>
+<blockquote>
+<p>另一種查看錯誤的方式則是用 <code>:copen</code> 打開 quickfix window (如下圖)，<code>:clist</code> 和 <code>:copen</code> 列出的結果會是一模一樣的，只是提供了另一種顯示方式。</p>
+</blockquote>
+<p>我們可以將游標放到 quickfix window 裡的錯誤上按下 <code>&lt;enter></code> 即可跳轉，用法直覺，而且不需要每次重新開啟列表，也可以在此視窗裡查詢字串。</p>
+<p>而且剛剛提到的跳轉指令<code>:cn</code> <code>:cp</code> <code>:cc [number]</code> 也都可以配合使用。</p>
+<p><img src=copen_cmd.png alt></p>
 <p>Note: 詳見 <code>:help quickfix-window</code></p>
 <h1 id=讓你飛起來的-vim-dispatch>讓你飛起來的 vim-dispatch</h1>
-<p>使用 vim 內建的 <code>:make</code> 指令，在編譯時其實是會 block 整個 vim 的，若專案夠大編譯很久，那段時間什麼都不能做，只能看著他編譯，vim-dispatch 完美解決了這個問題。</p>
-<p>安裝:</p>
+<p>使用 vim 內建的 <code>:make</code> 指令，在編譯時會卡住整個 vim，並且什麼都不能做，只能看著它編譯，因此 vim-dispatch 外掛完美解決了這個問題。</p>
+<p>使用 vim-plug 安裝:</p>
 <div class=highlight><div class=chroma>
 <table class=lntable><tr><td class=lntd>
 <pre tabindex=0 class=chroma><code><span class=lnt>1
@@ -145,24 +152,28 @@
 <pre tabindex=0 class=chroma><code class=language-vim data-lang=vim><span class=nx>Plug</span> <span class=s1>&#39;tpope/vim-dispatch&#39;</span><span class=err>
 </span></code></pre></td></tr></table>
 </div>
-</div><p>其實 vim-dispatch 用法很簡單，<code>:Make</code> 編譯，<code>:Copen</code> 打開 quickfix-window，當然也能配合剛剛所提到的跳轉指令使用，幾乎完美配合 vim 的使用習慣。</p>
-<p>當然 vim-dispatch 不只這樣而已，其他功能不在本篇範圍，詳情請見 vim-dispatch 的文件。</p>
-<p>火力展示，可以看到上方的視窗可以移動 cursor，下方則繼續編譯:
+</div><p>vim-dispath 的用法相當簡單，只要記住兩個指令即可</p>
+<ul>
+<li>
+<p><code>:Make</code> ： 意義和 <code>:make</code> 一樣，只是不會卡住 vim</p>
+</li>
+<li>
+<p><code>:Copen</code> ：意義和 <code>:copen</code> 一樣會打開 quickfix window</p>
+</li>
+</ul>
+<p>當然最一開始所說的跳轉指令，也能使用。此外掛跟 vim 內建的使用方式幾乎完全相同，只是指令稍微有差異。</p>
+<p><code>:Make</code> 編譯展示，可以看到下方在編譯，同時上方在移動游標:
 <img src=Make_demo.gif alt></p>
 <h1 id=q--a>Q & A</h1>
-<h2 id=vim-使用-make-指令那不是只有寫-makefile-才能用嗎>vim 使用 <code>:make</code> 指令，那不是只有寫 Makefile 才能用嗎?</h2>
-<p>當然在想在其他語言使用 <code>:make</code> 指令，達到一樣效果就要編寫客製化的 plugin 了，當然很受歡迎的語言都有人寫好啦，通常都是包在語言 plugin 裡：</p>
+<h2 id=vim-使用-make-指令那是不是只有-makefile-才能用>vim 使用 <code>:make</code> 指令，那是不是只有 Makefile 才能用?</h2>
+<p>當然不是，其他語言的社群為了也會提供一樣的功能，讓使用者在能無痛使用這個功能</p>
 <ul>
-<li><a href=https://github.com/rust-lang/rust.vim>rust.vim</a>: 原本編譯方式是 <code>cargo build</code>，在 vim 裡變成 <code>:make build</code> 就好，以此類推可以 <code>:make run</code></li>
-<li><a href=https://github.com/fatih/vim-go>vim-go</a>:在 vim-go 可以使用 <code>:GoBuild</code>, <code>:GoRun</code></li>
+<li><a href=https://github.com/rust-lang/rust.vim>rust.vim</a>: 原本 rust 編譯方式是 <code>cargo build</code>，使用此外掛之後，在 vim 裡使用 <code>:make build</code> 就好，以此類推 <code>:make run</code> 就是 <code>cargo run</code></li>
 </ul>
-<h1 id=結語>結語</h1>
-<p>vim 是一個古老的編輯器，某些特色和 C 語言沾上關係，比如說 make 指令 (或許當年 C 語言獨佔天下!?)，當然 vim 不只可以使用 make 這種自動化編譯，vim 也開放了幾個 api 使得再起他語言也能達成一樣的效果 (詳見 <code>:help makeprg</code>)，在專案愈大時愈能顯現其效果，當年我也是碰了一點 linux kernel，才學習到這個技巧，加速了不少開發速度。</p>
-<p>如果有什麼相關技巧，歡迎在底下留言交流。</p>
 <h1 id=reference>Reference</h1>
 <ul>
 <li><a href=https://www.ptt.cc/bbs/Editor/M.1285722960.A.BF5.html>Re: [轉錄][問題] VIM 編譯與執行</a></li>
-<li>vim help doc</li>
+<li><code>:help quickfix</code></li>
 </ul>
 </div>
 <footer class=post-footer>
@@ -206,7 +217,7 @@
 <span class=copyright-year>
 &copy;
 -
-2021<span class=heart><i class="iconfont icon-heart"></i></span><span></span>
+2022<span class=heart><i class="iconfont icon-heart"></i></span><span></span>
 </span>
 </div>
 </footer>
