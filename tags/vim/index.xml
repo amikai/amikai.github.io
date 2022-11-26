@@ -1,1 +1,88 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>vim on amikai's blog</title><link>https://amikai.github.io/tags/vim/</link><description>Recent content in vim on amikai's blog</description><generator>Hugo -- gohugo.io</generator><language>zh-tw</language><lastBuildDate>Mon, 16 Aug 2021 15:20:34 +0800</lastBuildDate><atom:link href="https://amikai.github.io/tags/vim/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang 開發環境 - 使用 neovim 0.5</title><link>https://amikai.github.io/2021/08/16/go_neovim_env_0.5/</link><pubDate>Mon, 16 Aug 2021 15:20:34 +0800</pubDate><guid>https://amikai.github.io/2021/08/16/go_neovim_env_0.5/</guid><description>Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所有工作不會再被單一線程給擋住 (在過去 linter 檢查時，是無法寫程式碼的)，大大提升了可用性和使用者體驗，朝現</description></item><item><title>好用的 vim virtualedit 選項</title><link>https://amikai.github.io/2021/05/23/vim-virtualedit/</link><pubDate>Sun, 23 May 2021 05:51:41 +0000</pubDate><guid>https://amikai.github.io/2021/05/23/vim-virtualedit/</guid><description>使用 ctrl+v 把一個圖片中的英文字母區塊刪掉會像以下這樣 顯然是不如預期 set virtualedit=block 設定了此選項之後 什麼是 virutaledit 在 vim 裡預設行為：游標無法放在沒有字元的地方，也就是</description></item><item><title>在 (neo)vim 裡 C 語言程式碼導覽技巧</title><link>https://amikai.github.io/2020/11/28/vim-c-env-move/</link><pubDate>Sat, 28 Nov 2020 21:50:57 +0000</pubDate><guid>https://amikai.github.io/2020/11/28/vim-c-env-move/</guid><description>現代的專案開發，很少在從無到有打造，大部分都是基於現有的程式之上繼續開發或維護，進入專案之後，通常第一件事就是大量閱讀程式碼理清專案的整個脈</description></item><item><title>聊聊你在 vim 常用的移動方式</title><link>https://amikai.github.io/2020/10/03/vim-commonly-used-motion/</link><pubDate>Sat, 03 Oct 2020 10:53:36 +0000</pubDate><guid>https://amikai.github.io/2020/10/03/vim-commonly-used-motion/</guid><description>看下圖，如果想將 &amp;lt;expr&amp;gt; 改成 &amp;lt;leader&amp;gt; 你會怎麼做呢? 通常我看過的幾種方式如下： 使用 j 向下到 97 行，在使用 l 到 target 並且開始編輯，這也是最糟的 target 的行數看起來離 window 中</description></item><item><title>vim 高亮 yank 區域</title><link>https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/</link><pubDate>Tue, 29 Sep 2020 21:09:01 +0000</pubDate><guid>https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/</guid><description>y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的</description></item><item><title>你應該擴充的 text object</title><link>https://amikai.github.io/2020/09/22/vim-text-object/</link><pubDate>Tue, 22 Sep 2020 19:03:52 +0000</pubDate><guid>https://amikai.github.io/2020/09/22/vim-text-object/</guid><description>vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。 operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合</description></item><item><title>誰說不能在 vim 裡編譯，從 :make 到 :Make</title><link>https://amikai.github.io/2020/09/10/vim-make/</link><pubDate>Thu, 10 Sep 2020 00:21:31 +0000</pubDate><guid>https://amikai.github.io/2020/09/10/vim-make/</guid><description>前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的 大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到</description></item><item><title>聊聊 vim mark 使用情境 - code 參照</title><link>https://amikai.github.io/2020/09/07/vim-mark-tips/</link><pubDate>Mon, 07 Sep 2020 15:03:01 +0000</pubDate><guid>https://amikai.github.io/2020/09/07/vim-mark-tips/</guid><description>寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999</description></item><item><title>Golang 開發環境 - 使用 neovim</title><link>https://amikai.github.io/2020/09/03/go_neovim_env/</link><pubDate>Thu, 03 Sep 2020 10:48:54 +0000</pubDate><guid>https://amikai.github.io/2020/09/03/go_neovim_env/</guid><description>本篇設定部分已經過時，請看 Golang 開發環境 - 使用 neovim 0.5 你確定要用 neovim 開發 golang? 現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>vim on amikai's blog</title><link>https://amikai.github.io/tags/vim/</link><description>Recent content in vim on amikai's blog</description><generator>Hugo -- gohugo.io</generator><language>zh-tw</language><lastBuildDate>Mon, 16 Aug 2021 15:20:34 +0800</lastBuildDate><atom:link href="https://amikai.github.io/tags/vim/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang 開發環境 - 使用 neovim 0.5</title><link>https://amikai.github.io/2021/08/16/go_neovim_env_0.5/</link><pubDate>Mon, 16 Aug 2021 15:20:34 +0800</pubDate><guid>https://amikai.github.io/2021/08/16/go_neovim_env_0.5/</guid><description>Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所有工作不會再被單一線程給擋住 (在過去 linter 檢查時，是無法寫程式碼的)，大大提升了可用性和使用者體驗，朝現</description></item><item><title>好用的 vim virtualedit 選項</title><link>https://amikai.github.io/2021/05/23/vim-virtualedit/</link><pubDate>Sun, 23 May 2021 05:51:41 +0000</pubDate><guid>https://amikai.github.io/2021/05/23/vim-virtualedit/</guid><description>&lt;p>使用 &lt;code>ctrl+v&lt;/code> 把一個圖片中的英文字母區塊刪掉會像以下這樣
+顯然是不如預期
+&lt;img src="virtual-block-1.gif" alt="">&lt;/p>
+&lt;p>&lt;code>set virtualedit=block&lt;/code>
+設定了此選項之後
+&lt;img src="virtual-block-2.gif" alt="">&lt;/p></description></item><item><title>在 (neo)vim 裡 C 語言程式碼導覽技巧</title><link>https://amikai.github.io/2020/11/28/vim-c-env-move/</link><pubDate>Sat, 28 Nov 2020 21:50:57 +0000</pubDate><guid>https://amikai.github.io/2020/11/28/vim-c-env-move/</guid><description>&lt;p>現代的專案開發，很少在從無到有打造，大部分都是基於現有的程式之上繼續開發或維護，進入專案之後，通常第一件事就是大量閱讀程式碼理清專案的整個脈絡，才開始著手寫 code，所以好的程式碼導覽技巧將會帶你上天堂。&lt;/p>
+&lt;p>我將大部分的程式碼導覽情境大致拆成了三種情況：&lt;/p>
+&lt;ul>
+&lt;li>基本的跳轉：
+&lt;ul>
+&lt;li>&lt;code>#if&lt;/code> &lt;code>#endif&lt;/code> 中間的程式碼太長，想要跳轉到成對的 &lt;code>#if&lt;/code> &lt;code>#endif&lt;/code>&lt;/li>
+&lt;li>cursor 在 {&amp;hellip;} block 裡， 這個 block 又臭又長，想快速跳轉 block 的開頭和結尾&lt;/li>
+&lt;li>註解長篇大論，想快速跳到註解的開頭或結尾&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>尋找專案下檔案 (可透過設定 path option 解決)
+&lt;ul>
+&lt;li>跳轉到標頭檔&lt;/li>
+&lt;li>跳轉到指定檔案&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>使用 source code tagging system 快速挑轉到 function 定義及特定 symbol 等等：
+專案相當大的時候，source code tagging system 相當好用，可以快速找到定位，也不會花掉太多的資源，比起 LSP 的跳轉定義，是較輕量的選擇。&lt;/li>
+&lt;/ul>
+&lt;p>本篇依據上述三種情境，一一講述。&lt;/p></description></item><item><title>聊聊你在 vim 常用的移動方式</title><link>https://amikai.github.io/2020/10/03/vim-commonly-used-motion/</link><pubDate>Sat, 03 Oct 2020 10:53:36 +0000</pubDate><guid>https://amikai.github.io/2020/10/03/vim-commonly-used-motion/</guid><description>&lt;p>看下圖，如果想將 &lt;code>&amp;lt;expr&amp;gt;&lt;/code> 改成 &lt;code>&amp;lt;leader&amp;gt;&lt;/code> 你會怎麼做呢?
+&lt;img src="question.png" alt="">&lt;/p>
+&lt;p>通常我看過的幾種方式如下：&lt;/p>
+&lt;ol>
+&lt;li>使用 &lt;code>j&lt;/code> 向下到 97 行，在使用 &lt;code>l&lt;/code> 到 target 並且開始編輯，這也是最糟的&lt;/li>
+&lt;li>target 的行數看起來離 window 中央行很近， 使用 &lt;code>M&lt;/code> 跳到 window 中央行，再使用 &lt;code>h&lt;/code> &lt;code>j&lt;/code> &lt;code>k&lt;/code> &lt;code>l&lt;/code> 到 target&lt;/li>
+&lt;li>使用 &lt;code>:set number&lt;/code> 列出行號， 按下 &lt;code>97G&lt;/code> 到達 97 行， &lt;code>fe&lt;/code> &lt;code>;&lt;/code> &lt;code>;&lt;/code> &lt;code>;&lt;/code>
+註: &lt;code>f{char}&lt;/code> 找到此行的下一個字母、 &lt;code>;&lt;/code> 為重複上一個 &lt;code>f&lt;/code> 命令&lt;/li>
+&lt;li>使用 &lt;code>/&lt;/code> 搜尋 &lt;code>expr&lt;/code>，在使用 &lt;code>n&lt;/code> &lt;code>n&lt;/code> &lt;code>n&lt;/code> &lt;code>n&lt;/code> 到 target&lt;/li>
+&lt;li>&lt;del>使用 &lt;code>set mouse=n&lt;/code>，用滑鼠點 target&lt;/del>&lt;/li>
+&lt;/ol></description></item><item><title>vim 高亮 yank 區域</title><link>https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/</link><pubDate>Tue, 29 Sep 2020 21:09:01 +0000</pubDate><guid>https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/</guid><description>&lt;p>&lt;code>y&lt;/code> 是在 vim 裡最常使用的使用的 operator 之一，使用 &lt;code>y&lt;/code> operator 將會執行 yank 動作，但它無法像 &lt;code>c&lt;/code> (change) 和 &lt;code>d&lt;/code> (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的，按了 &lt;code>yiw&lt;/code> 複製 word 之後，你也無法確定是不是按對了，還要使用 &lt;code>:reg&lt;/code> 檢視，頗麻煩的。&lt;/p>
+&lt;p>解決方案：在使用 yank operator 之後，高亮複製區域短暫的時間，就能確認複製的區域有沒有誤。以下圖例為，在 23 行按下 &lt;code>yy&lt;/code>, 在 24 行的 return 上按下 &lt;code>yiw&lt;/code>&lt;/p>
+&lt;p>&lt;img src="cover.gif" alt="">&lt;/p></description></item><item><title>你應該擴充的 text object</title><link>https://amikai.github.io/2020/09/22/vim-text-object/</link><pubDate>Tue, 22 Sep 2020 19:03:52 +0000</pubDate><guid>https://amikai.github.io/2020/09/22/vim-text-object/</guid><description>&lt;p>vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。&lt;/p>
+&lt;p>operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。&lt;/p>
+&lt;p>如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 &lt;del>&lt;strong>耍潮必備&lt;/strong>&lt;/del>。&lt;/p>
+&lt;p>本篇將會提到:&lt;/p>
+&lt;ul>
+&lt;li>operator, text object, motion 的配合用法&lt;/li>
+&lt;li>內建 text object 的不足之處&lt;/li>
+&lt;li>擴充 text object 的 plugin&lt;/li>
+&lt;li>淺談 nvim-treesitter&lt;/li>
+&lt;/ul></description></item><item><title>誰說不能在 vim 裡編譯，從 :make 到 :Make</title><link>https://amikai.github.io/2020/09/10/vim-make/</link><pubDate>Thu, 10 Sep 2020 00:21:31 +0000</pubDate><guid>https://amikai.github.io/2020/09/10/vim-make/</guid><description>&lt;h1 id="前言">前言&lt;/h1>
+&lt;p>回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的&lt;/p>
+&lt;p>大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到 vim 更改。若編譯錯誤可能上百個，使用該方式，每條錯誤都需要找到該檔案，並且來回修改即編譯，會相當沒效率。&lt;/p>
+&lt;p>本文以 C 語言專案為例，聊聊強大的 vim 在這種情境下有什麼好的解決方案。
+&lt;img src="tmux_split.png" alt="">&lt;/p></description></item><item><title>聊聊 vim mark 使用情境 - code 參照</title><link>https://amikai.github.io/2020/09/07/vim-mark-tips/</link><pubDate>Mon, 07 Sep 2020 15:03:01 +0000</pubDate><guid>https://amikai.github.io/2020/09/07/vim-mark-tips/</guid><description>&lt;p>&lt;img src="cover.png" alt="">
+寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999 行。&lt;/p>
+&lt;p>另一種情境則是在寫測試的時候會和實作交互參照，而測試程式往往和實作程式會拆開不同的檔案，所以就必須要一直跳轉。&lt;/p>
+&lt;p>使用 split 的方式縱然是一個不錯的方式，但是如果要參照的點大於三個，就將螢幕切成三份，那工程師就相當痛苦了，不是每個人都用這種電腦螢幕啊。這種 split 的方式還有另一個缺點：如果手殘將檔案關掉，就得重找。
+&lt;img src="cj890.jpg" alt="">&lt;/p></description></item><item><title>Golang 開發環境 - 使用 neovim</title><link>https://amikai.github.io/2020/09/03/go_neovim_env/</link><pubDate>Thu, 03 Sep 2020 10:48:54 +0000</pubDate><guid>https://amikai.github.io/2020/09/03/go_neovim_env/</guid><description>&lt;blockquote>
+&lt;p>本篇設定部分已經過時，請看 &lt;a href="https://amikai.github.io/2021/08/16/go_neovim_env_0.5/">Golang 開發環境 - 使用 neovim 0.5&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;img src="cover.png" alt="">&lt;/p>
+&lt;h1 id="你確定要用-neovim-開發-golang">你確定要用 neovim 開發 golang?&lt;/h1>
+&lt;p>現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合了 git、debugger、自動補全引擎、terminal、extension manager，另外 Golang 在 vscode 上的 extension 支援相當良好: 包括跳轉到定義 (go to definition)、重新命名 (rename)、跳轉到型態定義 (go to type definition)⋯⋯ 一堆細節功能，近期由於 google golang team 接手 go 語言的 vscode extension，相信使用 vscode 開發是不錯的選擇。&lt;/p>
+&lt;p>(neo)vim 當然也能達到 vscode 的類似功能，但是必須花時間設定調教，在 vscode 問世之前我會推薦 (Neo)vim 給我的朋友，vscode 問世之後我就開始推薦 vscode。&lt;/p>
+&lt;blockquote>
+&lt;p>本文給那些本來就在 (neo)vim 裡打滾的人，但對 go 語言設定不熟的人，
+如果你是一張白紙，而且沒有被虐的癖好，我建議選擇 vscode，可以用較少的時間進入到寫程式的環節，而不是一直在花時間在設定，這篇文你也沒必要看下去。&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="預備動作">預備動作&lt;/h1>
+&lt;p>Must have&lt;/p>
+&lt;ul>
+&lt;li>你應該先安裝好 neovim nightly 版本，&lt;code>brew install neovim --HEAD&lt;/code>&lt;/li>
+&lt;li>你應該要知道怎麼使用 vim-plug，至少要知道 &lt;code>:PlugInstall&lt;/code>&lt;/li>
+&lt;li>你應該先把 go 語言環境安裝好&lt;/li>
+&lt;/ul>
+&lt;p>Nice to have&lt;/p>
+&lt;ul>
+&lt;li>你知道 &lt;code>:checkhealth&lt;/code> 和 &lt;code>:UpdateRemotePlugin&lt;/code>&lt;/li>
+&lt;li>你熟悉 &lt;code>:help&lt;/code> 的使用方式，這裡有一篇好文：&lt;a href="https://vim.fandom.com/wiki/Learn_to_use_help">Learn to use help&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h1 id="開發環境基本功能">開發環境基本功能&lt;/h1>
+&lt;p>一個好用的 Editor 我認為應該包含以下幾點基本功能:&lt;/p>
+&lt;ul>
+&lt;li>Auto completion - 好的自動補全引擎&lt;/li>
+&lt;li>File manager - 可以在側邊欄看到專案的結構&lt;/li>
+&lt;li>Real time linter - 在寫 code 犯錯的同時，有一些提示 (也就是 diagnostic 功能)&lt;/li>
+&lt;li>Background compile - 編譯的同時不應該卡住整個 Editor，要讓使用者能做其他事情&lt;/li>
+&lt;li>Code navigation: 包含跳轉到定義，跳轉到型態定義，或是當一個檔案寫得很長的時候，怎麼綜觀全局&lt;/li>
+&lt;/ul>
+&lt;p>以下我將會介紹我使用的 Plugin，達到我上述所提到的功能。
+以下使用的皆是 Neovim nightly 版本，使用 stable 是沒有官方 LSP 支援的。&lt;/p>
+&lt;p>Note：neovim 是由 vim 所 fork 出來的，差異介紹請看&lt;a href="https://kerol2r20.github.io/post/2017-10-29-neovim-introdunction/">這篇&lt;/a>，某些 Plugin 不會同時相容於兩者，我接會標明。&lt;/p></description></item></channel></rss>

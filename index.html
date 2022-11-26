@@ -105,7 +105,12 @@ Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所�
 </header>
 <div class=post-content>
 <div class=post-summary>
-使用 ctrl+v 把一個圖片中的英文字母區塊刪掉會像以下這樣 顯然是不如預期 set virtualedit=block 設定了此選項之後 什麼是 virutaledit 在 vim 裡預設行為：游標無法放在沒有字元的地方，也就是
+<p>使用 <code>ctrl+v</code> 把一個圖片中的英文字母區塊刪掉會像以下這樣
+顯然是不如預期
+<img src=virtual-block-1.gif alt></p>
+<p><code>set virtualedit=block</code>
+設定了此選項之後
+<img src=virtual-block-2.gif alt></p>
 </div>
 <div class=read-more>
 <a href=/2021/05/23/vim-virtualedit/ class=read-more-link></a>
@@ -121,7 +126,15 @@ Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所�
 </header>
 <div class=post-content>
 <div class=post-summary>
-在專案開發時，通常會執行代碼檢查、單元測試、編譯、執行等等。 在 docker 還沒出現之前，這些流程都是在本機上跑 (版本 0)，因為環境的不一致可能導致不同
+<p>在專案開發時，通常會執行代碼檢查、單元測試、編譯、執行等等。</p>
+<p>在 docker 還沒出現之前，這些流程都是在本機上跑 (版本 0)，因為環境的不一致可能導致不同主機執行結果不相同。將這些流程步驟撰寫成 dockerfile 直接在容器裡執行就可以解決上述問題 (版本 1)，但也衍伸出了新的問題。為了執行代碼檢查和編譯，下載了許多套件或是相依工具，造成映像檔肥大，很多套件或是相依工具在部署時是不需要的。</p>
+<p>如果把這些步驟拆成兩個階段思考 (版本 2)</p>
+<ul>
+<li>開發整合階段：代碼檢查、單元測試、編譯等等使用。</li>
+<li>部署階段：跑起執行檔，將此兩階段寫成兩個 dockerfile，並且建構出兩個映像檔，只要拿後者映像檔去部署即可。
+版本 2 成功解決了部署映像檔大小的問題，可是在必須維護兩個 dockerfile 還有中間流程所需的 script，Docker 17.05 所推出的 Multi-stage build 正好能解決此問題 (版本 3)。</li>
+</ul>
+<p>以下則是 版本 0 進化到 版本 3 的過程及解釋。</p>
 </div>
 <div class=read-more>
 <a href=/2021/03/01/docker-multi-stage-build/ class=read-more-link></a>
@@ -137,7 +150,26 @@ Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所�
 </header>
 <div class=post-content>
 <div class=post-summary>
-現代的專案開發，很少在從無到有打造，大部分都是基於現有的程式之上繼續開發或維護，進入專案之後，通常第一件事就是大量閱讀程式碼理清專案的整個脈
+<p>現代的專案開發，很少在從無到有打造，大部分都是基於現有的程式之上繼續開發或維護，進入專案之後，通常第一件事就是大量閱讀程式碼理清專案的整個脈絡，才開始著手寫 code，所以好的程式碼導覽技巧將會帶你上天堂。</p>
+<p>我將大部分的程式碼導覽情境大致拆成了三種情況：</p>
+<ul>
+<li>基本的跳轉：
+<ul>
+<li><code>#if</code> <code>#endif</code> 中間的程式碼太長，想要跳轉到成對的 <code>#if</code> <code>#endif</code></li>
+<li>cursor 在 {&mldr;} block 裡， 這個 block 又臭又長，想快速跳轉 block 的開頭和結尾</li>
+<li>註解長篇大論，想快速跳到註解的開頭或結尾</li>
+</ul>
+</li>
+<li>尋找專案下檔案 (可透過設定 path option 解決)
+<ul>
+<li>跳轉到標頭檔</li>
+<li>跳轉到指定檔案</li>
+</ul>
+</li>
+<li>使用 source code tagging system 快速挑轉到 function 定義及特定 symbol 等等：
+專案相當大的時候，source code tagging system 相當好用，可以快速找到定位，也不會花掉太多的資源，比起 LSP 的跳轉定義，是較輕量的選擇。</li>
+</ul>
+<p>本篇依據上述三種情境，一一講述。</p>
 </div>
 <div class=read-more>
 <a href=/2020/11/28/vim-c-env-move/ class=read-more-link></a>
@@ -153,7 +185,17 @@ Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所�
 </header>
 <div class=post-content>
 <div class=post-summary>
-看下圖，如果想將 &lt;expr> 改成 &lt;leader> 你會怎麼做呢? 通常我看過的幾種方式如下： 使用 j 向下到 97 行，在使用 l 到 target 並且開始編輯，這也是最糟的 target 的行數看起來離 window 中
+<p>看下圖，如果想將 <code>&lt;expr></code> 改成 <code>&lt;leader></code> 你會怎麼做呢?
+<img src=question.png alt></p>
+<p>通常我看過的幾種方式如下：</p>
+<ol>
+<li>使用 <code>j</code> 向下到 97 行，在使用 <code>l</code> 到 target 並且開始編輯，這也是最糟的</li>
+<li>target 的行數看起來離 window 中央行很近， 使用 <code>M</code> 跳到 window 中央行，再使用 <code>h</code> <code>j</code> <code>k</code> <code>l</code> 到 target</li>
+<li>使用 <code>:set number</code> 列出行號， 按下 <code>97G</code> 到達 97 行， <code>fe</code> <code>;</code> <code>;</code> <code>;</code>
+註: <code>f{char}</code> 找到此行的下一個字母、 <code>;</code> 為重複上一個 <code>f</code> 命令</li>
+<li>使用 <code>/</code> 搜尋 <code>expr</code>，在使用 <code>n</code> <code>n</code> <code>n</code> <code>n</code> 到 target</li>
+<li><del>使用 <code>set mouse=n</code>，用滑鼠點 target</del></li>
+</ol>
 </div>
 <div class=read-more>
 <a href=/2020/10/03/vim-commonly-used-motion/ class=read-more-link></a>
@@ -169,7 +211,9 @@ Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所�
 </header>
 <div class=post-content>
 <div class=post-summary>
-y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的
+<p><code>y</code> 是在 vim 裡最常使用的使用的 operator 之一，使用 <code>y</code> operator 將會執行 yank 動作，但它無法像 <code>c</code> (change) 和 <code>d</code> (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的，按了 <code>yiw</code> 複製 word 之後，你也無法確定是不是按對了，還要使用 <code>:reg</code> 檢視，頗麻煩的。</p>
+<p>解決方案：在使用 yank operator 之後，高亮複製區域短暫的時間，就能確認複製的區域有沒有誤。以下圖例為，在 23 行按下 <code>yy</code>, 在 24 行的 return 上按下 <code>yiw</code></p>
+<p><img src=cover.gif alt></p>
 </div>
 <div class=read-more>
 <a href=/2020/09/29/vim-tips-highlight-yank-region/ class=read-more-link></a>
@@ -185,7 +229,16 @@ y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將
 </header>
 <div class=post-content>
 <div class=post-summary>
-vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。 operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合
+<p>vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。</p>
+<p>operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。</p>
+<p>如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 <del><strong>耍潮必備</strong></del>。</p>
+<p>本篇將會提到:</p>
+<ul>
+<li>operator, text object, motion 的配合用法</li>
+<li>內建 text object 的不足之處</li>
+<li>擴充 text object 的 plugin</li>
+<li>淺談 nvim-treesitter</li>
+</ul>
 </div>
 <div class=read-more>
 <a href=/2020/09/22/vim-text-object/ class=read-more-link></a>
@@ -201,7 +254,11 @@ vim 高效率編輯的背後，operator, motion, text object 的配合功不可�
 </header>
 <div class=post-content>
 <div class=post-summary>
-前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的 大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到
+<h1 id=前言>前言</h1>
+<p>回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的</p>
+<p>大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到 vim 更改。若編譯錯誤可能上百個，使用該方式，每條錯誤都需要找到該檔案，並且來回修改即編譯，會相當沒效率。</p>
+<p>本文以 C 語言專案為例，聊聊強大的 vim 在這種情境下有什麼好的解決方案。
+<img src=tmux_split.png alt></p>
 </div>
 <div class=read-more>
 <a href=/2020/09/10/vim-make/ class=read-more-link></a>
@@ -217,7 +274,11 @@ vim 高效率編輯的背後，operator, motion, text object 的配合功不可�
 </header>
 <div class=post-content>
 <div class=post-summary>
-寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999
+<p><img src=cover.png alt>
+寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999 行。</p>
+<p>另一種情境則是在寫測試的時候會和實作交互參照，而測試程式往往和實作程式會拆開不同的檔案，所以就必須要一直跳轉。</p>
+<p>使用 split 的方式縱然是一個不錯的方式，但是如果要參照的點大於三個，就將螢幕切成三份，那工程師就相當痛苦了，不是每個人都用這種電腦螢幕啊。這種 split 的方式還有另一個缺點：如果手殘將檔案關掉，就得重找。
+<img src=cj890.jpg alt></p>
 </div>
 <div class=read-more>
 <a href=/2020/09/07/vim-mark-tips/ class=read-more-link></a>
@@ -233,7 +294,41 @@ vim 高效率編輯的背後，operator, motion, text object 的配合功不可�
 </header>
 <div class=post-content>
 <div class=post-summary>
-本篇設定部分已經過時，請看 Golang 開發環境 - 使用 neovim 0.5 你確定要用 neovim 開發 golang? 現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合
+<blockquote>
+<p>本篇設定部分已經過時，請看 <a href=https://amikai.github.io/2021/08/16/go_neovim_env_0.5/>Golang 開發環境 - 使用 neovim 0.5</a></p>
+</blockquote>
+<p><img src=cover.png alt></p>
+<h1 id=你確定要用-neovim-開發-golang>你確定要用 neovim 開發 golang?</h1>
+<p>現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合了 git、debugger、自動補全引擎、terminal、extension manager，另外 Golang 在 vscode 上的 extension 支援相當良好: 包括跳轉到定義 (go to definition)、重新命名 (rename)、跳轉到型態定義 (go to type definition)⋯⋯ 一堆細節功能，近期由於 google golang team 接手 go 語言的 vscode extension，相信使用 vscode 開發是不錯的選擇。</p>
+<p>(neo)vim 當然也能達到 vscode 的類似功能，但是必須花時間設定調教，在 vscode 問世之前我會推薦 (Neo)vim 給我的朋友，vscode 問世之後我就開始推薦 vscode。</p>
+<blockquote>
+<p>本文給那些本來就在 (neo)vim 裡打滾的人，但對 go 語言設定不熟的人，
+如果你是一張白紙，而且沒有被虐的癖好，我建議選擇 vscode，可以用較少的時間進入到寫程式的環節，而不是一直在花時間在設定，這篇文你也沒必要看下去。</p>
+</blockquote>
+<h1 id=預備動作>預備動作</h1>
+<p>Must have</p>
+<ul>
+<li>你應該先安裝好 neovim nightly 版本，<code>brew install neovim --HEAD</code></li>
+<li>你應該要知道怎麼使用 vim-plug，至少要知道 <code>:PlugInstall</code></li>
+<li>你應該先把 go 語言環境安裝好</li>
+</ul>
+<p>Nice to have</p>
+<ul>
+<li>你知道 <code>:checkhealth</code> 和 <code>:UpdateRemotePlugin</code></li>
+<li>你熟悉 <code>:help</code> 的使用方式，這裡有一篇好文：<a href=https://vim.fandom.com/wiki/Learn_to_use_help>Learn to use help</a></li>
+</ul>
+<h1 id=開發環境基本功能>開發環境基本功能</h1>
+<p>一個好用的 Editor 我認為應該包含以下幾點基本功能:</p>
+<ul>
+<li>Auto completion - 好的自動補全引擎</li>
+<li>File manager - 可以在側邊欄看到專案的結構</li>
+<li>Real time linter - 在寫 code 犯錯的同時，有一些提示 (也就是 diagnostic 功能)</li>
+<li>Background compile - 編譯的同時不應該卡住整個 Editor，要讓使用者能做其他事情</li>
+<li>Code navigation: 包含跳轉到定義，跳轉到型態定義，或是當一個檔案寫得很長的時候，怎麼綜觀全局</li>
+</ul>
+<p>以下我將會介紹我使用的 Plugin，達到我上述所提到的功能。
+以下使用的皆是 Neovim nightly 版本，使用 stable 是沒有官方 LSP 支援的。</p>
+<p>Note：neovim 是由 vim 所 fork 出來的，差異介紹請看<a href=https://kerol2r20.github.io/post/2017-10-29-neovim-introdunction/>這篇</a>，某些 Plugin 不會同時相容於兩者，我接會標明。</p>
 </div>
 <div class=read-more>
 <a href=/2020/09/03/go_neovim_env/ class=read-more-link></a>

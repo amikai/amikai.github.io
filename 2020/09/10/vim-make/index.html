@@ -11,7 +11,9 @@
 <meta name=msapplication-navbutton-color content="#f8f5ec">
 <meta name=apple-mobile-web-app-capable content="yes">
 <meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec">
-<meta name=author content><meta name=description content="前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的 大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到"><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
+<meta name=author content><meta name=description content="前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的
+大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到 vim 更改。若編譯錯誤可能上百個，使用該方式，每條錯誤都需要找到該檔案，並且來回修改即編譯，會相當沒效率。
+本文以 C 語言專案為例，聊聊強大的 vim 在這種情境下有什麼好的解決方案。 "><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
 <meta name=generator content="Hugo 0.87.0 with theme even">
 <link rel=canonical href=https://amikai.github.io/2020/09/10/vim-make/>
 <link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png>
@@ -22,18 +24,30 @@
 <link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet>
 <link href=/lib/fancybox/jquery.fancybox-3.1.20.min.css rel=stylesheet>
 <meta property="og:title" content="誰說不能在 vim 裡編譯，從 :make 到 :Make">
-<meta property="og:description" content="前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的 大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到">
+<meta property="og:description" content="前言
+回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的
+大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到 vim 更改。若編譯錯誤可能上百個，使用該方式，每條錯誤都需要找到該檔案，並且來回修改即編譯，會相當沒效率。
+本文以 C 語言專案為例，聊聊強大的 vim 在這種情境下有什麼好的解決方案。
+">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://amikai.github.io/2020/09/10/vim-make/"><meta property="article:section" content="post">
 <meta property="article:published_time" content="2020-09-10T00:21:31+00:00">
 <meta property="article:modified_time" content="2020-09-10T00:21:31+00:00">
 <meta itemprop=name content="誰說不能在 vim 裡編譯，從 :make 到 :Make">
-<meta itemprop=description content="前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的 大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到"><meta itemprop=datePublished content="2020-09-10T00:21:31+00:00">
+<meta itemprop=description content="前言
+回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的
+大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到 vim 更改。若編譯錯誤可能上百個，使用該方式，每條錯誤都需要找到該檔案，並且來回修改即編譯，會相當沒效率。
+本文以 C 語言專案為例，聊聊強大的 vim 在這種情境下有什麼好的解決方案。
+"><meta itemprop=datePublished content="2020-09-10T00:21:31+00:00">
 <meta itemprop=dateModified content="2020-09-10T00:21:31+00:00">
 <meta itemprop=wordCount content="984">
 <meta itemprop=keywords content="vim,"><meta name=twitter:card content="summary">
 <meta name=twitter:title content="誰說不能在 vim 裡編譯，從 :make 到 :Make">
-<meta name=twitter:description content="前言 回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的 大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<meta name=twitter:description content="前言
+回想一下，上一次使用 vim 寫程式要編譯時，你是怎麼做的
+大多人數會將 terminal 切成兩塊，一塊是 vim，一塊是 bash 用來編譯 (如下圖)，編譯有錯誤，則移動到 vim 更改。若編譯錯誤可能上百個，使用該方式，每條錯誤都需要找到該檔案，並且來回修改即編譯，會相當沒效率。
+本文以 C 語言專案為例，聊聊強大的 vim 在這種情境下有什麼好的解決方案。
+"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
 <script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]-->
 </head>
 <body>

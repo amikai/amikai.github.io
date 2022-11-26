@@ -1,1 +1,132 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>golang78 syntax series on amikai's blog</title><link>https://amikai.github.io/categories/golang78-syntax-series/</link><description>Recent content in golang78 syntax series on amikai's blog</description><generator>Hugo -- gohugo.io</generator><language>zh-tw</language><lastBuildDate>Tue, 07 Jul 2020 13:42:50 +0000</lastBuildDate><atom:link href="https://amikai.github.io/categories/golang78-syntax-series/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang 78 語法篇 - method set</title><link>https://amikai.github.io/2020/07/07/golang78syntax2/</link><pubDate>Tue, 07 Jul 2020 13:42:50 +0000</pubDate><guid>https://amikai.github.io/2020/07/07/golang78syntax2/</guid><description>method set, interface, auto deference or reference 當這些語法綜合再一起使用時，很容易混淆，甚至寫出 bug code，這章我們就透過題目探討一下 method set 常常被大家誤會的地方。 Golang 78 語法篇 - interface</description></item><item><title>Golang 78 語法篇 - interface</title><link>https://amikai.github.io/2020/07/03/golang78syntax/</link><pubDate>Fri, 03 Jul 2020 10:59:36 +0000</pubDate><guid>https://amikai.github.io/2020/07/03/golang78syntax/</guid><description>Interface 可以說是 golang 的精髓之一。golang interface 特殊的語法以及概念也是工程師常常犯錯的地方。此題只是用來釐清自己的概念。 題目 請問以下程式輸出結果為何 1</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>golang78 syntax series on amikai's blog</title><link>https://amikai.github.io/categories/golang78-syntax-series/</link><description>Recent content in golang78 syntax series on amikai's blog</description><generator>Hugo -- gohugo.io</generator><language>zh-tw</language><lastBuildDate>Tue, 07 Jul 2020 13:42:50 +0000</lastBuildDate><atom:link href="https://amikai.github.io/categories/golang78-syntax-series/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang 78 語法篇 - method set</title><link>https://amikai.github.io/2020/07/07/golang78syntax2/</link><pubDate>Tue, 07 Jul 2020 13:42:50 +0000</pubDate><guid>https://amikai.github.io/2020/07/07/golang78syntax2/</guid><description>&lt;p>&lt;code>method set&lt;/code>, &lt;code>interface&lt;/code>, &lt;code>auto deference or reference&lt;/code> 當這些語法綜合再一起使用時，很容易混淆，甚至寫出 bug code，這章我們就透過題目探討一下 &lt;code>method set&lt;/code> 常常被大家誤會的地方。&lt;/p>
+&lt;p>&lt;a href="https://amikai.github.io/2020/07/03/golang78syntax/">Golang 78 語法篇 - interface %&lt;/a> Line 50 用到的概念就在這篇。&lt;/p>
+&lt;h1 id="題目">題目&lt;/h1>
+&lt;p>請問以下程式輸出結果為何&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-golang" data-lang="golang">&lt;span class="kd">type&lt;/span> &lt;span class="nx">Employee&lt;/span> &lt;span class="kd">struct&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">e&lt;/span> &lt;span class="nx">Employee&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="nf">DoWork&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nx">fmt&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;do work&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="nx">Employee&lt;/span>&lt;span class="p">{}).&lt;/span>&lt;span class="nf">DoWork&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>答案只有兩種方向:
+1. 無法編譯
+2. 印出 do work&lt;/p>
+&lt;p>這個程式可以編譯，並且還印出 do work 但是為什麼呢？&lt;/p></description></item><item><title>Golang 78 語法篇 - interface</title><link>https://amikai.github.io/2020/07/03/golang78syntax/</link><pubDate>Fri, 03 Jul 2020 10:59:36 +0000</pubDate><guid>https://amikai.github.io/2020/07/03/golang78syntax/</guid><description>&lt;p>Interface 可以說是 golang 的精髓之一。golang interface 特殊的語法以及概念也是工程師常常犯錯的地方。此題只是用來釐清自己的概念。&lt;/p>
+&lt;h1 id="題目">題目&lt;/h1>
+&lt;p>請問以下程式輸出結果為何&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-golang" data-lang="golang">&lt;span class="kn">package&lt;/span> &lt;span class="nx">main&lt;/span>
+&lt;span class="kn">import&lt;/span> &lt;span class="s">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;span class="kd">type&lt;/span> &lt;span class="nx">S&lt;/span> &lt;span class="kd">struct&lt;/span>&lt;span class="p">{&lt;/span>
+&lt;span class="nx">val&lt;/span> &lt;span class="kt">int&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">s&lt;/span> &lt;span class="nx">S&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="nf">F&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;span class="kd">type&lt;/span> &lt;span class="nx">IF&lt;/span> &lt;span class="kd">interface&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="nf">F&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="nf">InitType&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="nx">S&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="kd">var&lt;/span> &lt;span class="nx">s&lt;/span> &lt;span class="nx">S&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="nx">s&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="nf">InitPointer&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="nx">S&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="kd">var&lt;/span> &lt;span class="nx">s&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="nx">S&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="nx">s&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="nf">InitEfaceType&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="kd">interface&lt;/span>&lt;span class="p">{}&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="kd">var&lt;/span> &lt;span class="nx">s&lt;/span> &lt;span class="nx">S&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="nx">s&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="nf">InitEfacePointer&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="kd">interface&lt;/span>&lt;span class="p">{}&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="kd">var&lt;/span> &lt;span class="nx">s&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="nx">S&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="nx">s&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="nf">InitIfaceType&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="nx">IF&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="kd">var&lt;/span> &lt;span class="nx">s&lt;/span> &lt;span class="nx">S&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="nx">s&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="nf">InitIfacePointer&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="nx">IF&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="kd">var&lt;/span> &lt;span class="nx">s&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="nx">S&lt;/span>
+&lt;span class="k">return&lt;/span> &lt;span class="nx">s&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;span class="kd">func&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;span class="c1">// fmt.Println(InitType() == nil) // type mismatch
+&lt;/span>&lt;span class="c1">&lt;/span> &lt;span class="nx">fmt&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">InitPointer&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="kc">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="nx">fmt&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">InitEfaceType&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="kc">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="nx">fmt&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">InitEfacePointer&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="kc">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="nx">fmt&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">InitIfaceType&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="kc">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="nx">fmt&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nf">Println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">InitIfacePointer&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="kc">nil&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;span class="p">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

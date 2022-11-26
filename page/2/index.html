@@ -92,7 +92,38 @@
 </header>
 <div class=post-content>
 <div class=post-summary>
-method set, interface, auto deference or reference 當這些語法綜合再一起使用時，很容易混淆，甚至寫出 bug code，這章我們就透過題目探討一下 method set 常常被大家誤會的地方。 Golang 78 語法篇 - interface
+<p><code>method set</code>, <code>interface</code>, <code>auto deference or reference</code> 當這些語法綜合再一起使用時，很容易混淆，甚至寫出 bug code，這章我們就透過題目探討一下 <code>method set</code> 常常被大家誤會的地方。</p>
+<p><a href=https://amikai.github.io/2020/07/03/golang78syntax/>Golang 78 語法篇 - interface %</a> Line 50 用到的概念就在這篇。</p>
+<h1 id=題目>題目</h1>
+<p>請問以下程式輸出結果為何</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-golang data-lang=golang><span class=kd>type</span> <span class=nx>Employee</span> <span class=kd>struct</span> <span class=p>{}</span>
+
+<span class=kd>func</span> <span class=p>(</span><span class=nx>e</span> <span class=nx>Employee</span><span class=p>)</span> <span class=nf>DoWork</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;do work&#34;</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=p>(</span><span class=o>&amp;</span><span class=nx>Employee</span><span class=p>{}).</span><span class=nf>DoWork</span><span class=p>()</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>答案只有兩種方向:
+1. 無法編譯
+2. 印出 do work</p>
+<p>這個程式可以編譯，並且還印出 do work 但是為什麼呢？</p>
 </div>
 <div class=read-more>
 <a href=/2020/07/07/golang78syntax2/ class=read-more-link></a>
@@ -111,7 +142,120 @@ method set, interface, auto deference or reference 當這些語法綜合再一�
 </header>
 <div class=post-content>
 <div class=post-summary>
-Interface 可以說是 golang 的精髓之一。golang interface 特殊的語法以及概念也是工程師常常犯錯的地方。此題只是用來釐清自己的概念。 題目 請問以下程式輸出結果為何 1
+<p>Interface 可以說是 golang 的精髓之一。golang interface 特殊的語法以及概念也是工程師常常犯錯的地方。此題只是用來釐清自己的概念。</p>
+<h1 id=題目>題目</h1>
+<p>請問以下程式輸出結果為何</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-golang data-lang=golang><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=s>&#34;fmt&#34;</span>
+
+<span class=kd>type</span> <span class=nx>S</span> <span class=kd>struct</span><span class=p>{</span>
+    <span class=nx>val</span> <span class=kt>int</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=p>(</span><span class=nx>s</span> <span class=nx>S</span><span class=p>)</span> <span class=nf>F</span><span class=p>()</span> <span class=p>{}</span>
+
+<span class=kd>type</span> <span class=nx>IF</span> <span class=kd>interface</span> <span class=p>{</span>
+	<span class=nf>F</span><span class=p>()</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>InitType</span><span class=p>()</span> <span class=nx>S</span> <span class=p>{</span>
+	<span class=kd>var</span> <span class=nx>s</span> <span class=nx>S</span>
+	<span class=k>return</span> <span class=nx>s</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>InitPointer</span><span class=p>()</span> <span class=o>*</span><span class=nx>S</span> <span class=p>{</span>
+	<span class=kd>var</span> <span class=nx>s</span> <span class=o>*</span><span class=nx>S</span>
+	<span class=k>return</span> <span class=nx>s</span>
+<span class=p>}</span>
+<span class=kd>func</span> <span class=nf>InitEfaceType</span><span class=p>()</span> <span class=kd>interface</span><span class=p>{}</span> <span class=p>{</span>
+	<span class=kd>var</span> <span class=nx>s</span> <span class=nx>S</span>
+	<span class=k>return</span> <span class=nx>s</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>InitEfacePointer</span><span class=p>()</span> <span class=kd>interface</span><span class=p>{}</span> <span class=p>{</span>
+	<span class=kd>var</span> <span class=nx>s</span> <span class=o>*</span><span class=nx>S</span>
+	<span class=k>return</span> <span class=nx>s</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>InitIfaceType</span><span class=p>()</span> <span class=nx>IF</span> <span class=p>{</span>
+	<span class=kd>var</span> <span class=nx>s</span> <span class=nx>S</span>
+	<span class=k>return</span> <span class=nx>s</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>InitIfacePointer</span><span class=p>()</span> <span class=nx>IF</span> <span class=p>{</span>
+	<span class=kd>var</span> <span class=nx>s</span> <span class=o>*</span><span class=nx>S</span>
+	<span class=k>return</span> <span class=nx>s</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=c1>// fmt.Println(InitType() == nil) // type mismatch
+</span><span class=c1></span>	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nf>InitPointer</span><span class=p>()</span> <span class=o>==</span> <span class=kc>nil</span><span class=p>)</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nf>InitEfaceType</span><span class=p>()</span> <span class=o>==</span> <span class=kc>nil</span><span class=p>)</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nf>InitEfacePointer</span><span class=p>()</span> <span class=o>==</span> <span class=kc>nil</span><span class=p>)</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nf>InitIfaceType</span><span class=p>()</span> <span class=o>==</span> <span class=kc>nil</span><span class=p>)</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nf>InitIfacePointer</span><span class=p>()</span> <span class=o>==</span> <span class=kc>nil</span><span class=p>)</span>
+<span class=p>}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div>
 </div>
 <div class=read-more>
 <a href=/2020/07/03/golang78syntax/ class=read-more-link></a>

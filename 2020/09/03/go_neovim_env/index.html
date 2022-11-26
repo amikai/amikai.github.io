@@ -11,7 +11,16 @@
 <meta name=msapplication-navbutton-color content="#f8f5ec">
 <meta name=apple-mobile-web-app-capable content="yes">
 <meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec">
-<meta name=author content><meta name=description content="本篇設定部分已經過時，請看 Golang 開發環境 - 使用 neovim 0.5 你確定要用 neovim 開發 golang? 現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合"><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
+<meta name=author content><meta name=description content=" 本篇設定部分已經過時，請看 Golang 開發環境 - 使用 neovim 0.5
+ 你確定要用 neovim 開發 golang? 現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合了 git、debugger、自動補全引擎、terminal、extension manager，另外 Golang 在 vscode 上的 extension 支援相當良好: 包括跳轉到定義 (go to definition)、重新命名 (rename)、跳轉到型態定義 (go to type definition)⋯⋯ 一堆細節功能，近期由於 google golang team 接手 go 語言的 vscode extension，相信使用 vscode 開發是不錯的選擇。
+(neo)vim 當然也能達到 vscode 的類似功能，但是必須花時間設定調教，在 vscode 問世之前我會推薦 (Neo)vim 給我的朋友，vscode 問世之後我就開始推薦 vscode。
+ 本文給那些本來就在 (neo)vim 裡打滾的人，但對 go 語言設定不熟的人， 如果你是一張白紙，而且沒有被虐的癖好，我建議選擇 vscode，可以用較少的時間進入到寫程式的環節，而不是一直在花時間在設定，這篇文你也沒必要看下去。
+ 預備動作 Must have
+ 你應該先安裝好 neovim nightly 版本，brew install neovim --HEAD 你應該要知道怎麼使用 vim-plug，至少要知道 :PlugInstall 你應該先把 go 語言環境安裝好  Nice to have
+ 你知道 :checkhealth 和 :UpdateRemotePlugin 你熟悉 :help 的使用方式，這裡有一篇好文：Learn to use help  開發環境基本功能 一個好用的 Editor 我認為應該包含以下幾點基本功能:
+ Auto completion - 好的自動補全引擎 File manager - 可以在側邊欄看到專案的結構 Real time linter - 在寫 code 犯錯的同時，有一些提示 (也就是 diagnostic 功能) Background compile - 編譯的同時不應該卡住整個 Editor，要讓使用者能做其他事情 Code navigation: 包含跳轉到定義，跳轉到型態定義，或是當一個檔案寫得很長的時候，怎麼綜觀全局  以下我將會介紹我使用的 Plugin，達到我上述所提到的功能。 以下使用的皆是 Neovim nightly 版本，使用 stable 是沒有官方 LSP 支援的。
+Note：neovim 是由 vim 所 fork 出來的，差異介紹請看這篇，某些 Plugin 不會同時相容於兩者，我接會標明。
+"><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
 <meta name=generator content="Hugo 0.87.0 with theme even">
 <link rel=canonical href=https://amikai.github.io/2020/09/03/go_neovim_env/>
 <link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png>
@@ -22,19 +31,121 @@
 <link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet>
 <link href=/lib/fancybox/jquery.fancybox-3.1.20.min.css rel=stylesheet>
 <meta property="og:title" content="Golang 開發環境 - 使用 neovim">
-<meta property="og:description" content="本篇設定部分已經過時，請看 Golang 開發環境 - 使用 neovim 0.5 你確定要用 neovim 開發 golang? 現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合">
+<meta property="og:description" content="
+本篇設定部分已經過時，請看 Golang 開發環境 - 使用 neovim 0.5
+
+
+你確定要用 neovim 開發 golang?
+現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合了 git、debugger、自動補全引擎、terminal、extension manager，另外 Golang 在 vscode 上的 extension 支援相當良好: 包括跳轉到定義 (go to definition)、重新命名 (rename)、跳轉到型態定義 (go to type definition)⋯⋯ 一堆細節功能，近期由於 google golang team 接手 go 語言的 vscode extension，相信使用 vscode 開發是不錯的選擇。
+(neo)vim 當然也能達到 vscode 的類似功能，但是必須花時間設定調教，在 vscode 問世之前我會推薦 (Neo)vim 給我的朋友，vscode 問世之後我就開始推薦 vscode。
+
+本文給那些本來就在 (neo)vim 裡打滾的人，但對 go 語言設定不熟的人，
+如果你是一張白紙，而且沒有被虐的癖好，我建議選擇 vscode，可以用較少的時間進入到寫程式的環節，而不是一直在花時間在設定，這篇文你也沒必要看下去。
+
+預備動作
+Must have
+
+你應該先安裝好 neovim nightly 版本，brew install neovim --HEAD
+你應該要知道怎麼使用 vim-plug，至少要知道 :PlugInstall
+你應該先把 go 語言環境安裝好
+
+Nice to have
+
+你知道 :checkhealth 和 :UpdateRemotePlugin
+你熟悉 :help 的使用方式，這裡有一篇好文：Learn to use help
+
+開發環境基本功能
+一個好用的 Editor 我認為應該包含以下幾點基本功能:
+
+Auto completion - 好的自動補全引擎
+File manager - 可以在側邊欄看到專案的結構
+Real time linter - 在寫 code 犯錯的同時，有一些提示 (也就是 diagnostic 功能)
+Background compile - 編譯的同時不應該卡住整個 Editor，要讓使用者能做其他事情
+Code navigation: 包含跳轉到定義，跳轉到型態定義，或是當一個檔案寫得很長的時候，怎麼綜觀全局
+
+以下我將會介紹我使用的 Plugin，達到我上述所提到的功能。
+以下使用的皆是 Neovim nightly 版本，使用 stable 是沒有官方 LSP 支援的。
+Note：neovim 是由 vim 所 fork 出來的，差異介紹請看這篇，某些 Plugin 不會同時相容於兩者，我接會標明。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://amikai.github.io/2020/09/03/go_neovim_env/"><meta property="og:image" content="https://amikai.github.io/2020/09/03/go_neovim_env/cover.png"><meta property="article:section" content="post">
 <meta property="article:published_time" content="2020-09-03T10:48:54+00:00">
 <meta property="article:modified_time" content="2020-09-03T10:48:54+00:00">
 <meta itemprop=name content="Golang 開發環境 - 使用 neovim">
-<meta itemprop=description content="本篇設定部分已經過時，請看 Golang 開發環境 - 使用 neovim 0.5 你確定要用 neovim 開發 golang? 現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合"><meta itemprop=datePublished content="2020-09-03T10:48:54+00:00">
+<meta itemprop=description content="
+本篇設定部分已經過時，請看 Golang 開發環境 - 使用 neovim 0.5
+
+
+你確定要用 neovim 開發 golang?
+現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合了 git、debugger、自動補全引擎、terminal、extension manager，另外 Golang 在 vscode 上的 extension 支援相當良好: 包括跳轉到定義 (go to definition)、重新命名 (rename)、跳轉到型態定義 (go to type definition)⋯⋯ 一堆細節功能，近期由於 google golang team 接手 go 語言的 vscode extension，相信使用 vscode 開發是不錯的選擇。
+(neo)vim 當然也能達到 vscode 的類似功能，但是必須花時間設定調教，在 vscode 問世之前我會推薦 (Neo)vim 給我的朋友，vscode 問世之後我就開始推薦 vscode。
+
+本文給那些本來就在 (neo)vim 裡打滾的人，但對 go 語言設定不熟的人，
+如果你是一張白紙，而且沒有被虐的癖好，我建議選擇 vscode，可以用較少的時間進入到寫程式的環節，而不是一直在花時間在設定，這篇文你也沒必要看下去。
+
+預備動作
+Must have
+
+你應該先安裝好 neovim nightly 版本，brew install neovim --HEAD
+你應該要知道怎麼使用 vim-plug，至少要知道 :PlugInstall
+你應該先把 go 語言環境安裝好
+
+Nice to have
+
+你知道 :checkhealth 和 :UpdateRemotePlugin
+你熟悉 :help 的使用方式，這裡有一篇好文：Learn to use help
+
+開發環境基本功能
+一個好用的 Editor 我認為應該包含以下幾點基本功能:
+
+Auto completion - 好的自動補全引擎
+File manager - 可以在側邊欄看到專案的結構
+Real time linter - 在寫 code 犯錯的同時，有一些提示 (也就是 diagnostic 功能)
+Background compile - 編譯的同時不應該卡住整個 Editor，要讓使用者能做其他事情
+Code navigation: 包含跳轉到定義，跳轉到型態定義，或是當一個檔案寫得很長的時候，怎麼綜觀全局
+
+以下我將會介紹我使用的 Plugin，達到我上述所提到的功能。
+以下使用的皆是 Neovim nightly 版本，使用 stable 是沒有官方 LSP 支援的。
+Note：neovim 是由 vim 所 fork 出來的，差異介紹請看這篇，某些 Plugin 不會同時相容於兩者，我接會標明。"><meta itemprop=datePublished content="2020-09-03T10:48:54+00:00">
 <meta itemprop=dateModified content="2020-09-03T10:48:54+00:00">
 <meta itemprop=wordCount content="2368"><meta itemprop=image content="https://amikai.github.io/2020/09/03/go_neovim_env/cover.png">
 <meta itemprop=keywords content="vim,neovim,"><meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://amikai.github.io/2020/09/03/go_neovim_env/cover.png">
 <meta name=twitter:title content="Golang 開發環境 - 使用 neovim">
-<meta name=twitter:description content="本篇設定部分已經過時，請看 Golang 開發環境 - 使用 neovim 0.5 你確定要用 neovim 開發 golang? 現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<meta name=twitter:description content="
+本篇設定部分已經過時，請看 Golang 開發環境 - 使用 neovim 0.5
+
+
+你確定要用 neovim 開發 golang?
+現在是 vscode 稱霸天下的時代，理所當然的 (neo)vim 也常常被拿來 vscode 比較，vscode 內建整合了 git、debugger、自動補全引擎、terminal、extension manager，另外 Golang 在 vscode 上的 extension 支援相當良好: 包括跳轉到定義 (go to definition)、重新命名 (rename)、跳轉到型態定義 (go to type definition)⋯⋯ 一堆細節功能，近期由於 google golang team 接手 go 語言的 vscode extension，相信使用 vscode 開發是不錯的選擇。
+(neo)vim 當然也能達到 vscode 的類似功能，但是必須花時間設定調教，在 vscode 問世之前我會推薦 (Neo)vim 給我的朋友，vscode 問世之後我就開始推薦 vscode。
+
+本文給那些本來就在 (neo)vim 裡打滾的人，但對 go 語言設定不熟的人，
+如果你是一張白紙，而且沒有被虐的癖好，我建議選擇 vscode，可以用較少的時間進入到寫程式的環節，而不是一直在花時間在設定，這篇文你也沒必要看下去。
+
+預備動作
+Must have
+
+你應該先安裝好 neovim nightly 版本，brew install neovim --HEAD
+你應該要知道怎麼使用 vim-plug，至少要知道 :PlugInstall
+你應該先把 go 語言環境安裝好
+
+Nice to have
+
+你知道 :checkhealth 和 :UpdateRemotePlugin
+你熟悉 :help 的使用方式，這裡有一篇好文：Learn to use help
+
+開發環境基本功能
+一個好用的 Editor 我認為應該包含以下幾點基本功能:
+
+Auto completion - 好的自動補全引擎
+File manager - 可以在側邊欄看到專案的結構
+Real time linter - 在寫 code 犯錯的同時，有一些提示 (也就是 diagnostic 功能)
+Background compile - 編譯的同時不應該卡住整個 Editor，要讓使用者能做其他事情
+Code navigation: 包含跳轉到定義，跳轉到型態定義，或是當一個檔案寫得很長的時候，怎麼綜觀全局
+
+以下我將會介紹我使用的 Plugin，達到我上述所提到的功能。
+以下使用的皆是 Neovim nightly 版本，使用 stable 是沒有官方 LSP 支援的。
+Note：neovim 是由 vim 所 fork 出來的，差異介紹請看這篇，某些 Plugin 不會同時相容於兩者，我接會標明。"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
 <script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]-->
 </head>
 <body>

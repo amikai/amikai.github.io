@@ -11,7 +11,9 @@
 <meta name=msapplication-navbutton-color content="#f8f5ec">
 <meta name=apple-mobile-web-app-capable content="yes">
 <meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec">
-<meta name=author content><meta name=description content="y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的"><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
+<meta name=author content><meta name=description content="y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的，按了 yiw 複製 word 之後，你也無法確定是不是按對了，還要使用 :reg 檢視，頗麻煩的。
+解決方案：在使用 yank operator 之後，高亮複製區域短暫的時間，就能確認複製的區域有沒有誤。以下圖例為，在 23 行按下 yy, 在 24 行的 return 上按下 yiw
+"><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
 <meta name=generator content="Hugo 0.87.0 with theme even">
 <link rel=canonical href=https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/>
 <link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png>
@@ -22,19 +24,25 @@
 <link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet>
 <link href=/lib/fancybox/jquery.fancybox-3.1.20.min.css rel=stylesheet>
 <meta property="og:title" content="vim 高亮 yank 區域">
-<meta property="og:description" content="y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的">
+<meta property="og:description" content="y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的，按了 yiw 複製 word 之後，你也無法確定是不是按對了，還要使用 :reg 檢視，頗麻煩的。
+解決方案：在使用 yank operator 之後，高亮複製區域短暫的時間，就能確認複製的區域有沒有誤。以下圖例為，在 23 行按下 yy, 在 24 行的 return 上按下 yiw
+">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/"><meta property="og:image" content="https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/cover.gif"><meta property="article:section" content="post">
 <meta property="article:published_time" content="2020-09-29T21:09:01+00:00">
 <meta property="article:modified_time" content="2020-09-29T21:09:01+00:00">
 <meta itemprop=name content="vim 高亮 yank 區域">
-<meta itemprop=description content="y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的"><meta itemprop=datePublished content="2020-09-29T21:09:01+00:00">
+<meta itemprop=description content="y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的，按了 yiw 複製 word 之後，你也無法確定是不是按對了，還要使用 :reg 檢視，頗麻煩的。
+解決方案：在使用 yank operator 之後，高亮複製區域短暫的時間，就能確認複製的區域有沒有誤。以下圖例為，在 23 行按下 yy, 在 24 行的 return 上按下 yiw
+"><meta itemprop=datePublished content="2020-09-29T21:09:01+00:00">
 <meta itemprop=dateModified content="2020-09-29T21:09:01+00:00">
 <meta itemprop=wordCount content="228"><meta itemprop=image content="https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/cover.gif">
 <meta itemprop=keywords content="vim,neovim,"><meta name=twitter:card content="summary_large_image">
 <meta name=twitter:image content="https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/cover.gif">
 <meta name=twitter:title content="vim 高亮 yank 區域">
-<meta name=twitter:description content="y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<meta name=twitter:description content="y 是在 vim 裡最常使用的使用的 operator 之一，使用 y operator 將會執行 yank 動作，但它無法像 c (change) 和 d (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的，按了 yiw 複製 word 之後，你也無法確定是不是按對了，還要使用 :reg 檢視，頗麻煩的。
+解決方案：在使用 yank operator 之後，高亮複製區域短暫的時間，就能確認複製的區域有沒有誤。以下圖例為，在 23 行按下 yy, 在 24 行的 return 上按下 yiw
+"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
 <script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]-->
 </head>
 <body>

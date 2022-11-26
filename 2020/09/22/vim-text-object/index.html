@@ -11,7 +11,11 @@
 <meta name=msapplication-navbutton-color content="#f8f5ec">
 <meta name=apple-mobile-web-app-capable content="yes">
 <meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec">
-<meta name=author content><meta name=description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。 operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合"><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
+<meta name=author content><meta name=description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。
+operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。
+如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 耍潮必備。
+本篇將會提到:
+ operator, text object, motion 的配合用法 內建 text object 的不足之處 擴充 text object 的 plugin 淺談 nvim-treesitter "><meta name=keywords content="go 語言 neovim 環境設定,kubernetes,golang,k8s,neovim">
 <meta name=generator content="Hugo 0.87.0 with theme even">
 <link rel=canonical href=https://amikai.github.io/2020/09/22/vim-text-object/>
 <link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png>
@@ -22,18 +26,45 @@
 <link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet>
 <link href=/lib/fancybox/jquery.fancybox-3.1.20.min.css rel=stylesheet>
 <meta property="og:title" content="你應該擴充的 text object">
-<meta property="og:description" content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。 operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合">
+<meta property="og:description" content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。
+operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。
+如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 耍潮必備。
+本篇將會提到:
+
+operator, text object, motion 的配合用法
+內建 text object 的不足之處
+擴充 text object 的 plugin
+淺談 nvim-treesitter
+">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://amikai.github.io/2020/09/22/vim-text-object/"><meta property="article:section" content="post">
 <meta property="article:published_time" content="2020-09-22T19:03:52+00:00">
 <meta property="article:modified_time" content="2020-09-22T19:03:52+00:00">
 <meta itemprop=name content="你應該擴充的 text object">
-<meta itemprop=description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。 operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合"><meta itemprop=datePublished content="2020-09-22T19:03:52+00:00">
+<meta itemprop=description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。
+operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。
+如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 耍潮必備。
+本篇將會提到:
+
+operator, text object, motion 的配合用法
+內建 text object 的不足之處
+擴充 text object 的 plugin
+淺談 nvim-treesitter
+"><meta itemprop=datePublished content="2020-09-22T19:03:52+00:00">
 <meta itemprop=dateModified content="2020-09-22T19:03:52+00:00">
 <meta itemprop=wordCount content="2768">
 <meta itemprop=keywords content="vim,neovim,"><meta name=twitter:card content="summary">
 <meta name=twitter:title content="你應該擴充的 text object">
-<meta name=twitter:description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。 operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<meta name=twitter:description content="vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。
+operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。
+如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 耍潮必備。
+本篇將會提到:
+
+operator, text object, motion 的配合用法
+內建 text object 的不足之處
+擴充 text object 的 plugin
+淺談 nvim-treesitter
+"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
 <script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]-->
 </head>
 <body>
