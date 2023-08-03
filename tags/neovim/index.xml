@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>neovim on no code no pain</title><link>https://amikai.github.io/tags/neovim/</link><description>Recent content in neovim on no code no pain</description><generator>Hugo -- gohugo.io</generator><language>zh-tw</language><lastBuildDate>Mon, 16 Aug 2021 15:20:34 +0800</lastBuildDate><atom:link href="https://amikai.github.io/tags/neovim/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang 開發環境 - 使用 neovim 0.5</title><link>https://amikai.github.io/post/go_neovim_env_0.5/</link><pubDate>Mon, 16 Aug 2021 15:20:34 +0800</pubDate><guid>https://amikai.github.io/post/go_neovim_env_0.5/</guid><description>Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所有工作不會再被單一線程給擋住 (在過去 linter 檢查時，是無法寫程式碼的)，大大提升了可用性和使用者體驗，朝現代編輯器躍進了一大步。neovim 並沒有因此停下腳步，在之後的版本陸續推出了
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>neovim on no code no pain</title><link>https://amikai.github.io/tags/neovim/</link><description>Recent content in neovim on no code no pain</description><generator>Hugo -- gohugo.io</generator><language>zh-tw</language><lastBuildDate>Mon, 16 Aug 2021 15:20:34 +0800</lastBuildDate><atom:link href="https://amikai.github.io/tags/neovim/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang 開發環境 - 使用 neovim 0.5</title><link>https://amikai.github.io/2021/08/16/go_neovim_env_0.5/</link><pubDate>Mon, 16 Aug 2021 15:20:34 +0800</pubDate><guid>https://amikai.github.io/2021/08/16/go_neovim_env_0.5/</guid><description>Neovim 簡介 neovim 從 vim 專案 fork 之後，新增了 async 功能，所有工作不會再被單一線程給擋住 (在過去 linter 檢查時，是無法寫程式碼的)，大大提升了可用性和使用者體驗，朝現代編輯器躍進了一大步。neovim 並沒有因此停下腳步，在之後的版本陸續推出了
 remote plugin：使得寫 plugin 不在受限於 vimscript，可以使用其他語言並且基於 client server 架構和 neovim 溝通，這樣就能好好的利用各個語言生態系的工具，製作出更多有彈性的套件。ex: deoplete.nvim 和 defx.nvim 皆是 python 所撰寫的 remote plugin
 treesitter 的支援：過去 vim 的 syntax highlight 都是靠 regex，現在可以使用 treesitter ，效能更好，抓詞的時候更準確
 支援 lua 寫套件：可以完全使用 lua 撰寫套件 ，脫離怪異的 vimscript，和 remote plugin 不同，remote plugin 是基於 client server 架構通訊
-built-in LSP client (0.5)：內建 LSP client，使用者可以透過 neovim LSP api 和 LSP server 互動</description></item><item><title>在 (neo)vim 裡 C 語言程式碼導覽技巧</title><link>https://amikai.github.io/post/vim-c-env-move/</link><pubDate>Sat, 28 Nov 2020 21:50:57 +0000</pubDate><guid>https://amikai.github.io/post/vim-c-env-move/</guid><description>&lt;p>現代的專案開發，很少在從無到有打造，大部分都是基於現有的程式之上繼續開發或維護，進入專案之後，通常第一件事就是大量閱讀程式碼理清專案的整個脈絡，才開始著手寫 code，所以好的程式碼導覽技巧將會帶你上天堂。&lt;/p>
+built-in LSP client (0.5)：內建 LSP client，使用者可以透過 neovim LSP api 和 LSP server 互動</description></item><item><title>在 (neo)vim 裡 C 語言程式碼導覽技巧</title><link>https://amikai.github.io/2020/11/28/vim-c-env-move/</link><pubDate>Sat, 28 Nov 2020 21:50:57 +0000</pubDate><guid>https://amikai.github.io/2020/11/28/vim-c-env-move/</guid><description>&lt;p>現代的專案開發，很少在從無到有打造，大部分都是基於現有的程式之上繼續開發或維護，進入專案之後，通常第一件事就是大量閱讀程式碼理清專案的整個脈絡，才開始著手寫 code，所以好的程式碼導覽技巧將會帶你上天堂。&lt;/p>
 &lt;p>我將大部分的程式碼導覽情境大致拆成了三種情況：&lt;/p>
 &lt;ul>
 &lt;li>基本的跳轉：
@@ -21,10 +21,10 @@ built-in LSP client (0.5)：內建 LSP client，使用者可以透過 neovim LSP
 &lt;li>使用 source code tagging system 快速挑轉到 function 定義及特定 symbol 等等：
 專案相當大的時候，source code tagging system 相當好用，可以快速找到定位，也不會花掉太多的資源，比起 LSP 的跳轉定義，是較輕量的選擇。&lt;/li>
 &lt;/ul>
-&lt;p>本篇依據上述三種情境，一一講述。&lt;/p></description></item><item><title>vim 高亮 yank 區域</title><link>https://amikai.github.io/post/vim-tips-highlight-yank-region/</link><pubDate>Tue, 29 Sep 2020 21:09:01 +0000</pubDate><guid>https://amikai.github.io/post/vim-tips-highlight-yank-region/</guid><description>&lt;p>&lt;code>y&lt;/code> 是在 vim 裡最常使用的使用的 operator 之一，使用 &lt;code>y&lt;/code> operator 將會執行 yank 動作，但它無法像 &lt;code>c&lt;/code> (change) 和 &lt;code>d&lt;/code> (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的，按了 &lt;code>yiw&lt;/code> 複製 word 之後，你也無法確定是不是按對了，還要使用 &lt;code>:reg&lt;/code> 檢視，頗麻煩的。&lt;/p>
+&lt;p>本篇依據上述三種情境，一一講述。&lt;/p></description></item><item><title>vim 高亮 yank 區域</title><link>https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/</link><pubDate>Tue, 29 Sep 2020 21:09:01 +0000</pubDate><guid>https://amikai.github.io/2020/09/29/vim-tips-highlight-yank-region/</guid><description>&lt;p>&lt;code>y&lt;/code> 是在 vim 裡最常使用的使用的 operator 之一，使用 &lt;code>y&lt;/code> operator 將會執行 yank 動作，但它無法像 &lt;code>c&lt;/code> (change) 和 &lt;code>d&lt;/code> (delete) operator 使用之後馬上就知道對文件編輯了什麼。yank 動作是沒有反饋的，按了 &lt;code>yiw&lt;/code> 複製 word 之後，你也無法確定是不是按對了，還要使用 &lt;code>:reg&lt;/code> 檢視，頗麻煩的。&lt;/p>
 &lt;p>解決方案：在使用 yank operator 之後，高亮複製區域短暫的時間，就能確認複製的區域有沒有誤。以下圖例為，在 23 行按下 &lt;code>yy&lt;/code>, 在 24 行的 return 上按下 &lt;code>yiw&lt;/code>&lt;/p>
 &lt;p>&lt;img loading="lazy" src="cover.gif" alt="" />
-&lt;/p></description></item><item><title>你應該擴充的 text object</title><link>https://amikai.github.io/post/vim-text-object/</link><pubDate>Tue, 22 Sep 2020 19:03:52 +0000</pubDate><guid>https://amikai.github.io/post/vim-text-object/</guid><description>&lt;p>vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。&lt;/p>
+&lt;/p></description></item><item><title>你應該擴充的 text object</title><link>https://amikai.github.io/2020/09/22/vim-text-object/</link><pubDate>Tue, 22 Sep 2020 19:03:52 +0000</pubDate><guid>https://amikai.github.io/2020/09/22/vim-text-object/</guid><description>&lt;p>vim 高效率編輯的背後，operator, motion, text object 的配合功不可沒。&lt;/p>
 &lt;p>operator 是編輯的動作， text object 就是文字區塊，motion 是跳轉到文件點，透過三者的按鍵配合，就能達到所想及所得的編輯方式。&lt;/p>
 &lt;p>如果你有看過別人使用 vim ，通常會有這種想法：怎麼隨便按幾個鍵就刪這裡刪那裡複製這裡複製那裡，速度快到看不懂在幹嘛，而且還不會出錯，因為只要想好要做什麼，按鍵按下去就對了，這也是為什麼會高效率。說了一堆，反正就是 &lt;del>&lt;strong>耍潮必備&lt;/strong>&lt;/del>。&lt;/p>
 &lt;p>本篇將會提到:&lt;/p>
@@ -33,12 +33,12 @@ built-in LSP client (0.5)：內建 LSP client，使用者可以透過 neovim LSP
 &lt;li>內建 text object 的不足之處&lt;/li>
 &lt;li>擴充 text object 的 plugin&lt;/li>
 &lt;li>淺談 nvim-treesitter&lt;/li>
-&lt;/ul></description></item><item><title>聊聊 vim mark 使用情境 - code 參照</title><link>https://amikai.github.io/post/vim-mark-tips/</link><pubDate>Mon, 07 Sep 2020 15:03:01 +0000</pubDate><guid>https://amikai.github.io/post/vim-mark-tips/</guid><description>&lt;p>&lt;img loading="lazy" src="cover.png" alt="" />
+&lt;/ul></description></item><item><title>聊聊 vim mark 使用情境 - code 參照</title><link>https://amikai.github.io/2020/09/07/vim-mark-tips/</link><pubDate>Mon, 07 Sep 2020 15:03:01 +0000</pubDate><guid>https://amikai.github.io/2020/09/07/vim-mark-tips/</guid><description>&lt;p>&lt;img loading="lazy" src="cover.png" alt="" />
 寫程式的時候常常遇到一種情況，假設你是團隊的新人，需要常常參照別人的程式，看看團隊的 coding style 等等，可能需要參照 A file 的第 10 行，B file 第 8 行，C file 第 999 行。&lt;/p>
 &lt;p>另一種情境則是在寫測試的時候會和實作交互參照，而測試程式往往和實作程式會拆開不同的檔案，所以就必須要一直跳轉。&lt;/p>
 &lt;p>使用 split 的方式縱然是一個不錯的方式，但是如果要參照的點大於三個，就將螢幕切成三份，那工程師就相當痛苦了，不是每個人都用這種電腦螢幕啊。這種 split 的方式還有另一個缺點：如果手殘將檔案關掉，就得重找。
 &lt;img loading="lazy" src="cj890.jpg" alt="" />
-&lt;/p></description></item><item><title>Golang 開發環境 - 使用 neovim</title><link>https://amikai.github.io/post/go_neovim_env/</link><pubDate>Thu, 03 Sep 2020 10:48:54 +0000</pubDate><guid>https://amikai.github.io/post/go_neovim_env/</guid><description>&lt;blockquote>
+&lt;/p></description></item><item><title>Golang 開發環境 - 使用 neovim</title><link>https://amikai.github.io/2020/09/03/go_neovim_env/</link><pubDate>Thu, 03 Sep 2020 10:48:54 +0000</pubDate><guid>https://amikai.github.io/2020/09/03/go_neovim_env/</guid><description>&lt;blockquote>
 &lt;p>本篇設定部分已經過時，請看 &lt;a href="https://amikai.github.io/2021/08/16/go_neovim_env_0.5/">Golang 開發環境 - 使用 neovim 0.5&lt;/a>&lt;/p>
 &lt;/blockquote>
 &lt;p>&lt;img loading="lazy" src="cover.png" alt="" />

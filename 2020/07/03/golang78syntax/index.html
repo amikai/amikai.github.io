@@ -1,0 +1,243 @@
+<!doctype html><html lang=zh dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Golang 78 語法篇 - interface | no code no pain</title><meta name=keywords content="golang"><meta name=description content="Interface 可以說是 golang 的精髓之一。golang interface 特殊的語法以及概念也是工程師常常犯錯的地方。此題只是用來釐清自己的概念。
+題目
+請問以下程式輸出結果為何
+package main
+
+import &#34;fmt&#34;
+
+type S struct{
+    val int
+}
+
+func (s S) F() {}
+
+type IF interface {
+	F()
+}
+
+func InitType() S {
+	var s S
+	return s
+}
+
+func InitPointer() *S {
+	var s *S
+	return s
+}
+func InitEfaceType() interface{} {
+	var s S
+	return s
+}
+
+func InitEfacePointer() interface{} {
+	var s *S
+	return s
+}
+
+func InitIfaceType() IF {
+	var s S
+	return s
+}
+
+func InitIfacePointer() IF {
+	var s *S
+	return s
+}
+
+func main() {
+	// fmt.Println(InitType() == nil) // type mismatch
+	fmt.Println(InitPointer() == nil)
+	fmt.Println(InitEfaceType() == nil)
+	fmt.Println(InitEfacePointer() == nil)
+	fmt.Println(InitIfaceType() == nil)
+	fmt.Println(InitIfacePointer() == nil)
+}
+"><meta name=author content="amikai"><link rel=canonical href=https://amikai.github.io/2020/07/03/golang78syntax/><link crossorigin=anonymous href=/assets/css/stylesheet.d82d618ab18b8061cce6b313e7a33a5aef50405951b08c5c64e523c4465ce711.css integrity="sha256-2C1hirGLgGHM5rMT56M6Wu9QQFlRsIxcZOUjxEZc5xE=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://amikai.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://amikai.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://amikai.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://amikai.github.io/apple-touch-icon.png><link rel=mask-icon href=https://amikai.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=zh href=https://amikai.github.io/2020/07/03/golang78syntax/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-172478407-1","auto"),ga("send","pageview"))</script><meta property="og:title" content="Golang 78 語法篇 - interface"><meta property="og:description" content="Interface 可以說是 golang 的精髓之一。golang interface 特殊的語法以及概念也是工程師常常犯錯的地方。此題只是用來釐清自己的概念。
+題目
+請問以下程式輸出結果為何
+package main
+
+import &#34;fmt&#34;
+
+type S struct{
+    val int
+}
+
+func (s S) F() {}
+
+type IF interface {
+	F()
+}
+
+func InitType() S {
+	var s S
+	return s
+}
+
+func InitPointer() *S {
+	var s *S
+	return s
+}
+func InitEfaceType() interface{} {
+	var s S
+	return s
+}
+
+func InitEfacePointer() interface{} {
+	var s *S
+	return s
+}
+
+func InitIfaceType() IF {
+	var s S
+	return s
+}
+
+func InitIfacePointer() IF {
+	var s *S
+	return s
+}
+
+func main() {
+	// fmt.Println(InitType() == nil) // type mismatch
+	fmt.Println(InitPointer() == nil)
+	fmt.Println(InitEfaceType() == nil)
+	fmt.Println(InitEfacePointer() == nil)
+	fmt.Println(InitIfaceType() == nil)
+	fmt.Println(InitIfacePointer() == nil)
+}
+"><meta property="og:type" content="article"><meta property="og:url" content="https://amikai.github.io/2020/07/03/golang78syntax/"><meta property="article:section" content="post"><meta property="article:published_time" content="2020-07-03T10:59:36+00:00"><meta property="article:modified_time" content="2020-07-03T10:59:36+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Golang 78 語法篇 - interface"><meta name=twitter:description content="Interface 可以說是 golang 的精髓之一。golang interface 特殊的語法以及概念也是工程師常常犯錯的地方。此題只是用來釐清自己的概念。
+題目
+請問以下程式輸出結果為何
+package main
+
+import &#34;fmt&#34;
+
+type S struct{
+    val int
+}
+
+func (s S) F() {}
+
+type IF interface {
+	F()
+}
+
+func InitType() S {
+	var s S
+	return s
+}
+
+func InitPointer() *S {
+	var s *S
+	return s
+}
+func InitEfaceType() interface{} {
+	var s S
+	return s
+}
+
+func InitEfacePointer() interface{} {
+	var s *S
+	return s
+}
+
+func InitIfaceType() IF {
+	var s S
+	return s
+}
+
+func InitIfacePointer() IF {
+	var s *S
+	return s
+}
+
+func main() {
+	// fmt.Println(InitType() == nil) // type mismatch
+	fmt.Println(InitPointer() == nil)
+	fmt.Println(InitEfaceType() == nil)
+	fmt.Println(InitEfacePointer() == nil)
+	fmt.Println(InitIfaceType() == nil)
+	fmt.Println(InitIfacePointer() == nil)
+}
+"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://amikai.github.io/post/"},{"@type":"ListItem","position":3,"name":"Golang 78 語法篇 - interface","item":"https://amikai.github.io/2020/07/03/golang78syntax/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Golang 78 語法篇 - interface","name":"Golang 78 語法篇 - interface","description":"Interface 可以說是 golang 的精髓之一。golang interface 特殊的語法以及概念也是工程師常常犯錯的地方。此題只是用來釐清自己的概念。\n題目 請問以下程式輸出結果為何\npackage main import \u0026#34;fmt\u0026#34; type S struct{ val int } func (s S) F() {} type IF interface { F() } func InitType() S { var s S return s } func InitPointer() *S { var s *S return s } func InitEfaceType() interface{} { var s S return s } func InitEfacePointer() interface{} { var s *S return s } func InitIfaceType() IF { var s S return s } func InitIfacePointer() IF { var s *S return s } func main() { // fmt.Println(InitType() == nil) // type mismatch fmt.Println(InitPointer() == nil) fmt.Println(InitEfaceType() == nil) fmt.Println(InitEfacePointer() == nil) fmt.Println(InitIfaceType() == nil) fmt.Println(InitIfacePointer() == nil) } ","keywords":["golang"],"articleBody":"Interface 可以說是 golang 的精髓之一。golang interface 特殊的語法以及概念也是工程師常常犯錯的地方。此題只是用來釐清自己的概念。\n題目 請問以下程式輸出結果為何\npackage main import \"fmt\" type S struct{ val int } func (s S) F() {} type IF interface { F() } func InitType() S { var s S return s } func InitPointer() *S { var s *S return s } func InitEfaceType() interface{} { var s S return s } func InitEfacePointer() interface{} { var s *S return s } func InitIfaceType() IF { var s S return s } func InitIfacePointer() IF { var s *S return s } func main() { // fmt.Println(InitType() == nil) // type mismatch fmt.Println(InitPointer() == nil) fmt.Println(InitEfaceType() == nil) fmt.Println(InitEfacePointer() == nil) fmt.Println(InitIfaceType() == nil) fmt.Println(InitIfacePointer() == nil) } 回歸基本 在回答問題之前先複習什麼是 Interface Satisfaction 和 Interface Values ，分別在 The Go Programming Language 章節 7.3 和 7.5。\nInterface Satisfaction 直接給出書上的解釋，這兩段句子及範例程式已經淺顯易懂，不多作解釋:\nA type satisfies an interface if it possesses all the methods the interface requires.\nThe assignability rule for interfaces is very simple: an expression may be assigned to an interface only if its type satisfies the interface.\n/* package io type Writer interface { Write(p []byte) (n int, err error) } */ var w io.Writer w = os.Stdout // OK: *os.File has Write method w = new(bytes.Buffer) // OK: *bytes.Buffer has Write method w = time.Second // compile error: time.Duration lacks Write method Interface Values The Go Programming Language 7.5 第一句開門見山地馬上給出概念:\nConceptually, a value of an interface type, or interface value has two components, a concrete type and a value of that type . These are called the interface’s dynamic type and dynamic value.\n並且用一個例子做出了很棒的解釋:\nvar w io.writer w = os.Stdout w = new(bytes.Buffer) w = nil 另一個例子:\nvar w io.Writer var buf *bytes.Buffer w = buf fmt.Printf(\"%v %T\\n\", w, w) // *bytes.Buffer if w != nil { fmt.Println(\"w not nil\") // This line will be executed } 若 w != nil 要成立則 dynamic type 和 dynamic value 皆為 non-nil 才會成立。 因為 w 的 dynamic value 是 *bytes.Buffer 不為 nil 所以 w != nil 就會成立。\n解答 題目的 Line 43, 44 難度不高，直接跳過 剩下的看下圖\nLine 50 牽扯到了 method set 的細節，留著下篇解釋，可以參考 Reference 1, 2\nReference https://golang.org/ref/spec#Method_sets https://stackoverflow.com/questions/33587227/method-sets-pointer-vs-value-receiver ","wordCount":"349","inLanguage":"zh","datePublished":"2020-07-03T10:59:36Z","dateModified":"2020-07-03T10:59:36Z","author":{"@type":"Person","name":"amikai"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://amikai.github.io/2020/07/03/golang78syntax/"},"publisher":{"@type":"Organization","name":"no code no pain","logo":{"@type":"ImageObject","url":"https://amikai.github.io/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://amikai.github.io accesskey=h title="no code no pain (Alt + H)">no code no pain</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button><ul class=lang-switch><li>|</li><li><a href=https://amikai.github.io/en/ title=English aria-label=English>English</a></li></ul></div></div><ul id=menu><li><a href=https://amikai.github.io/archives title=Archive><span>Archive</span></a></li><li><a href=https://amikai.github.io/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://amikai.github.io/tags/ title=Tags><span>Tags</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class=post-title>Golang 78 語法篇 - interface</h1><div class=post-meta><span title='2020-07-03 10:59:36 +0000 UTC'>七月 3, 2020</span>&nbsp;·&nbsp;amikai</div></header><div class=post-content><p>Interface 可以說是 golang 的精髓之一。golang interface 特殊的語法以及概念也是工程師常常犯錯的地方。此題只是用來釐清自己的概念。</p><h1 id=題目>題目<a hidden class=anchor aria-hidden=true href=#題目>#</a></h1><p>請問以下程式輸出結果為何</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>S</span> <span style=color:#66d9ef>struct</span>{
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>val</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>s</span> <span style=color:#a6e22e>S</span>) <span style=color:#a6e22e>F</span>() {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>IF</span> <span style=color:#66d9ef>interface</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>F</span>()
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>InitType</span>() <span style=color:#a6e22e>S</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>s</span> <span style=color:#a6e22e>S</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>s</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>InitPointer</span>() <span style=color:#f92672>*</span><span style=color:#a6e22e>S</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>S</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>s</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>InitEfaceType</span>() <span style=color:#66d9ef>interface</span>{} {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>s</span> <span style=color:#a6e22e>S</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>s</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>InitEfacePointer</span>() <span style=color:#66d9ef>interface</span>{} {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>S</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>s</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>InitIfaceType</span>() <span style=color:#a6e22e>IF</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>s</span> <span style=color:#a6e22e>S</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>s</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>InitIfacePointer</span>() <span style=color:#a6e22e>IF</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>s</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>S</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>s</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// fmt.Println(InitType() == nil) // type mismatch
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>InitPointer</span>() <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>InitEfaceType</span>() <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>InitEfacePointer</span>() <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>InitIfaceType</span>() <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>InitIfacePointer</span>() <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h1 id=回歸基本>回歸基本<a hidden class=anchor aria-hidden=true href=#回歸基本>#</a></h1><p>在回答問題之前先複習什麼是 <code>Interface Satisfaction</code> 和 <code>Interface Values</code> ，分別在 The Go Programming Language 章節 7.3 和 7.5。</p><h2 id=interface-satisfaction>Interface Satisfaction<a hidden class=anchor aria-hidden=true href=#interface-satisfaction>#</a></h2><p>直接給出書上的解釋，這兩段句子及範例程式已經淺顯易懂，不多作解釋:</p><p>A type <code>satisfies</code> an interface if it possesses all the methods the interface requires.</p><p>The assignability rule for interfaces is very simple: an expression may be assigned to an interface only if its type satisfies the interface.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>package io
+</span></span></span><span style=display:flex><span><span style=color:#75715e>type Writer interface {
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    Write(p []byte) (n int, err error)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>}
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>w</span> <span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>Writer</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>w</span> = <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Stdout</span>           <span style=color:#75715e>// OK: *os.File has Write method
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>w</span> = new(<span style=color:#a6e22e>bytes</span>.<span style=color:#a6e22e>Buffer</span>)   <span style=color:#75715e>// OK: *bytes.Buffer has Write method
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>w</span> = <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>         <span style=color:#75715e>// compile error: time.Duration lacks Write method
+</span></span></span></code></pre></div><h2 id=interface-values>Interface Values<a hidden class=anchor aria-hidden=true href=#interface-values>#</a></h2><p>The Go Programming Language 7.5 第一句開門見山地馬上給出概念:</p><p>Conceptually, a value of an interface type, or <code>interface value</code> has two components, a concrete type and a value of that type . These are called the interface&rsquo;s <code>dynamic type</code> and <code>dynamic value</code>.</p><p>並且用一個例子做出了很棒的解釋:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>w</span> <span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>writer</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>w</span> = <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Stdout</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>w</span> = new(<span style=color:#a6e22e>bytes</span>.<span style=color:#a6e22e>Buffer</span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>w</span> = <span style=color:#66d9ef>nil</span>
+</span></span></code></pre></div><p><img loading=lazy src=golang78syntax_1.jpg alt></p><p>另一個例子:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-golang data-lang=golang><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>w</span> <span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>Writer</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>buf</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>bytes</span>.<span style=color:#a6e22e>Buffer</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>w</span> = <span style=color:#a6e22e>buf</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%v %T\n&#34;</span>, <span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>w</span>) <span style=color:#75715e>// &lt;nil&gt;  *bytes.Buffer
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>w</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;w not nil&#34;</span>) <span style=color:#75715e>// This line will be executed
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></div><p>若 <code>w != nil</code> 要成立則 <code>dynamic type</code> 和 <code>dynamic value</code> 皆為 <code>non-nil</code> 才會成立。
+因為 w 的 dynamic value 是 <code>*bytes.Buffer</code> 不為 <code>nil</code> 所以 <code>w != nil</code> 就會成立。</p><p><img loading=lazy src=golang78syntax_2.jpg alt></p><h1 id=解答>解答<a hidden class=anchor aria-hidden=true href=#解答>#</a></h1><p>題目的 Line 43, 44 難度不高，直接跳過
+剩下的看下圖</p><p><img loading=lazy src=golang78syntax_3.jpg alt></p><p>Line 50 牽扯到了 <code>method set</code> 的細節，留著下篇解釋，可以參考 Reference 1, 2</p><h1 id=reference>Reference<a hidden class=anchor aria-hidden=true href=#reference>#</a></h1><ol><li><a href=https://golang.org/ref/spec#Method_sets>https://golang.org/ref/spec#Method_sets</a></li><li><a href=https://stackoverflow.com/questions/33587227/method-sets-pointer-vs-value-receiver>https://stackoverflow.com/questions/33587227/method-sets-pointer-vs-value-receiver</a></li></ol></div><footer class=post-footer><ul class=post-tags><li><a href=https://amikai.github.io/tags/golang/>golang</a></li></ul></footer><script src=https://utteranc.es/client.js repo=amikai/my_hugo_blog_utterances issue-term=title label=amikai/my_hugo_blog_utterances theme=github-light crossorigin=anonymous async></script></article></main><footer class=footer><span>&copy; 2023 <a href=https://amikai.github.io>no code no pain</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="複製";function s(){t.innerHTML="複製成功！",setTimeout(()=>{t.innerHTML="複製"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
